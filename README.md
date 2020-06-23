@@ -35,7 +35,7 @@ This section gives a brief overview of the configurations that can be done by an
 
     "candidate_requests": "25",           // Probing size (number of initial requests)
     "string_similarity": "0.5",           // How similar two string need to be in order
-                                           // to yield as equals (e.g. two titles)
+                                          // to yield as equals (e.g. two titles)
     "record_similarity": "0.1",           // Overlapping between data records in order 
                                           // to yield as valid response
     "distribution_variance": "0.4",       // 
