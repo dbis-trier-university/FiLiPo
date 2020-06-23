@@ -35,12 +35,6 @@ public class QueryProcessor {
         }
     }
 
-    // TODO delete
-    public QueryProcessor(String queryStr, Model model){
-        this.query = QueryFactory.create(queryStr);
-        this.qexec = QueryExecutionFactory.create(query,model);
-    }
-
     public void close(){
         if(this.qexec != null) this.qexec.close();
         if(this.dataset != null) {

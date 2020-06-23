@@ -9,7 +9,7 @@ class StructuralPredicates{
     private static final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 
     private static void load(){
-        // TODO not hardcoded
+        //TODO extending with predicates
         structuralPredicates.add(RDF+"type");
         structuralPredicates.add(RDFS+"class");
         structuralPredicates.add(RDFS+"subClassOf");
