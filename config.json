@@ -1,0 +1,75 @@
+{
+  "globals": {
+    "logpath":"res/log/",
+    "outpath": "res/",
+    "dbpath": "database.json",
+    "scpath": "supconf.json",
+    "secretpath": "secrets.json",
+    "ipc": "tcp://*:5555",
+    "memory":"256",
+    "timeout": "500",
+    "mode": "0",
+    "loglevel": "0"
+  },
+  "linkage_config": {
+    "similarity_requests": "25",
+
+    "candidate_requests": "5",
+    "string_similarity": "0.5",
+    "record_similarity": "0.1",
+    "distribution_variance": "0.4",
+    "candidate_responses": "0.1",
+    "error_threshold": "0.8",
+    "traversal_depth": "2",
+    "functionality_threshold": "0.996",
+    "classifier": "regex",
+
+    "support_mode": "0",
+    "min_support_match": "0.5",
+    "min_support_nonmatch": "0.1",
+
+    "similarity_metrics": [
+      "Equal",
+      "Equal Normalized",
+      "Token Equal",
+      "Token Equal Normalized",
+      "Levenshtein",
+      "Levenshtein Normalized",
+      "Damerau-Levenshtein",
+      "Damerau-Levenshtein Normalized",
+      "Optimal-Alignment",
+      "Optimal-Alignment Normalized",
+      "Longest-Common-Subsequence",
+      "Longest-Common-Subsequence Normalized",
+      "Jaccard Token",
+      "Jaccard Token Normalized",
+      "Sorensen-Dice Token",
+      "Sorensen-Dice Token Normalized",
+      "Jaccard 2-grams",
+      "Jaccard 2-grams Normalized",
+      "Jaccard 2-grams Normalized Padding",
+      "Sorensen-Dice 2-grams",
+      "Sorensen-Dice 2-grams Normalized",
+      "Sorensen-Dice 2-grams Normalized Padding",
+      "Jaccard 2-shingles",
+      "Jaccard 2-shingles Normalized",
+      "Sorensen-Dice 2-shingles",
+      "Sorensen-Dice 2-shingles Normalized"
+    ]
+  },
+  "ruleset":[
+    {
+      "name": "isbn-issn",
+      "filter": "-"
+    },
+    {
+      "name": "insensitive-uri",
+      "filter": "/i"
+    },
+    {
+      "name": "fuzzy",
+      "filter": "/f"
+    }
+  ]
+}
+
