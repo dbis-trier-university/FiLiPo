@@ -59,19 +59,24 @@ This section gives a brief overview of the configurations that can be done by an
 ```
 
 ### Configuring RegExer
+This section of the `config.json` file is used to add rules (similar to an regular expression) to the `RegExer` class.
+
 ```
   "ruleset":[
     {
       "name": "isbn-issn",
-      "filter": "-"
+      "filter": "-"                   // The user can specify in the filter field which
+                                      // characters will be ignored when comparing values
     },
     {
       "name": "insensitive-uri",
-      "filter": "/i"
+      "filter": "/i"                  // The flag /i is used to specify that cases will be
+                                      // ignored when comparing values
     },
     {
       "name": "fuzzy",
-      "filter": "/f"
+      "filter": "/f"                  // Use the best matching similarity method
+                                      // (this can lead to errorenous results)
     }
   ]
 ```
