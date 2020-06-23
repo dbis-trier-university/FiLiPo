@@ -31,17 +31,22 @@ This section gives a brief overview of the configurations that can be done by an
 ### Aligning Settings
 ```
   "linkage_config": {
-    "similarity_requests": "25",
+    "similarity_requests": "100",         // Requests send to a Web API (sample size)
 
-    "candidate_requests": "5",
-    "string_similarity": "0.5",
-    "record_similarity": "0.1",
-    "distribution_variance": "0.4",
-    "candidate_responses": "0.1",
-    "error_threshold": "0.8",
-    "traversal_depth": "2",
-    "functionality_threshold": "0.996",
-    "classifier": "regex",
+    "candidate_requests": "25",           // Probing size (number of initial requests)
+    "string_similarity": "0.5",           // How similar two string need to be in order
+                                           // to yield as equals (e.g. two titles)
+    "record_similarity": "0.1",           // Overlapping between data records in order 
+                                          // to yield as valid response
+    "distribution_variance": "0.4",       // 
+    "candidate_responses": "0.1",         //
+    "error_threshold": "0.8",             //
+    "traversal_depth": "2",               // 
+    "functionality_threshold": "0.99",    // Every relation that has a functionality
+                                          // greater than 0.99 is consideres as identifier
+    "classifier": "regex",                // Used to specify if the regular expression
+                                          // approach (regex) will be used or the gradient
+                                          // boosting classifier (gbc)
 
     "support_mode": "0",
     "min_support_match": "0.5",
