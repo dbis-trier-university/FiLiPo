@@ -4,11 +4,15 @@ FiLiPo (Finding Linkge Points) is a data integration tool. It is used to align t
 ## How to use the Programme
 
 ## Usable Similarity Methods
+The table below lists all string similarity methods that can be used. Note, that for `n` you can use the values `n=2,3,4,5`. 
+
 | Category      | Methods                                                           |
 | ------------- |-------------------------------------------------------------------|
 | Equal         | Equal, Equal Normalized, Tokken Equal, Token Equal Normalized     |
 | Edit-based    | Levenshtein, Levenshtein Normalized,<br>Damerau-Levenshtein, Damerau-Levenshtein Normalized,<br>Optimal-Alignment, Optimal-Alignment Normalized,<br>Longest-Common-Subsequence, Longest-Common-Subsequence Normalized |
-| Set-based     | Jaccard Token, Jaccard Token Normalized,<br>Sorensen-Dice Toke, Sorensen-Dice Token Normalized, Overlap Token, Overlap Token Normalized<br>Jaccard n-grams, Jaccard n-grams Normalized, Jaccard n-grams Normalized Padding,<br>Sorensen-Dice n-grams, Sorensen-Dice n-grams Normalized, Sorensen-Dice n-grams Normalized Padding,<br>Overlap n-grams, Overlap n-grams Normalized, Overlap n-grams Normalized Padding,<br>Jaccard n-shingles, Jaccard n-shingles Normalized,<br> Sorensen-Dice n-shingles, Sorensen-Dice n-shingles Normalized,<br>Overlap n-shingles, Overlap n-shingles Normalized           |
+| Set-based     | Jaccard Token, Jaccard Token Normalized,<br>Sorensen-Dice Toke, Sorensen-Dice Token Normalized,<br>Overlap Token\*, Overlap Token Normalized\*<br>Jaccard n-grams, Jaccard n-grams Normalized, Jaccard n-grams Normalized Padding,<br>Sorensen-Dice n-grams, Sorensen-Dice n-grams Normalized, Sorensen-Dice n-grams Normalized Padding,<br>Overlap n-grams\*, Overlap n-grams Normalized\*, Overlap n-grams Normalized Padding\*,<br>Jaccard n-shingles, Jaccard n-shingles Normalized,<br> Sorensen-Dice n-shingles, Sorensen-Dice n-shingles Normalized,<br>Overlap n-shingles, Overlap n-shingles Normalized           |
+
+\* We do not recommend using these methods as they may lead to inaccurate results. Only experts should use them.
 
 ## Configuration File
 This section gives a brief overview of the configurations that can be done by an expert user. First the global settings will be explained. They are used to control the output of the programme, specify the level of detail in the log file and so on. Afterwards the aligning settings will be described, which can be used by an technical user to fine-tune the system. 
