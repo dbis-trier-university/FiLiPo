@@ -1,8 +1,8 @@
 # FiLiPo
-FiLiPo (Finding Linkge Points) is a data integration tool. It is used to align the schemes of a local Knowledge Base and a Web API. 
+FiLiPo is a system designed to simplify data integration. To do this, it determines a mapping between the schema of a local knowledge base and that of an API. This mapping specifies how the data can be integrated into the local Knowledge Base. The goal of FiLiPo was to enable non-technical users (e.g. data curators) to use this system. For this reason, only a few parameters need to be specified.
 
 ## Publications
-* Submitted to CIKM 2020 Demo Track: [Link to Pre-Print](#link)
+* Submitted to CIKM 2020 Demo Track: [Pre-Print](#link)
 
 ## How to use the Programme
 To be done..
@@ -23,7 +23,8 @@ The average values were calculated by performing three test series. In all test 
 | dblp - Semantic Scholar (DOI)         | 100            | 0.93              | 1.00           | 0.96     |
 | dblp - Semantic Scholar (ArXiv-Key)   | 100            | 1.00              | 1.00           | 1.00     |
 | dblp - Arxiv (ArXiv-Key)              | 100            | 1.00              | 1.00           | 1.00     |
-| dblp - elsevier (DOI)                 | 400            | 0.97              | 0.69           | 0.81     |
+| dblp - elsevier (DOI)                 | 400            | 0.97              | 0.69           | 0.81     |`
+| Linked Movie DB - OMDB API            | 100            | 0.81              | 0.92           | 0.86     |
 
 The second table shows our results when using the gradient boosting classifier instead of the regular expression approach.
 
@@ -35,6 +36,7 @@ The second table shows our results when using the gradient boosting classifier i
 | dblp - Semantic Scholar (ArXiv-Key)   | 100            | 1.00              | 1.00           | 1.00     |
 | dblp - Arxiv                          | 100            | 0.89              | 1.00           | 0.94     |
 | dblp - elsevierDOI                    | 400            | 0.96              | 0.72           | 0.83     |
+| Linked Movie DB - OMDB API            | 100            | 0.79              | 0.92           | 0.85     |
 
 ## Usable Similarity Methods
 We used the string similarity framework by Baltes et. al [[1](#references)]. The table below lists all string similarity methods that can be used. Note, that for `n` you can use the values `n=2,3,4,5`. 
