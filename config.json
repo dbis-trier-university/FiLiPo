@@ -12,9 +12,9 @@
     "loglevel": "0"
   },
   "linkage_config": {
-    "similarity_requests": "25",
+    "similarity_requests": "100",
 
-    "candidate_requests": "5",
+    "candidate_requests": "25",
     "string_similarity": "0.5",
     "record_similarity": "0.1",
     "distribution_variance": "0.4",

@@ -78,7 +78,14 @@
       "name": "omdb",
       "url": "http://www.omdbapi.com/?t={id}&apikey={key}",
       "parameters": [
-        {"name": "id", "status": "required", "type": "http://data.linkedmdb.org/resource/movie/film"}
+        {
+          "name": "id",
+          "status": "required",
+          "type": "http://data.linkedmdb.org/resource/movie/film",
+          "filter": [
+            "http://purl.org/dc/terms/title"
+          ]
+        }
       ],
       "format": "json"
     }
