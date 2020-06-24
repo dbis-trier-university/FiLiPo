@@ -10,7 +10,7 @@ FiLiPo (Finding Linkge Points) is a data integration tool. It is used to align t
 | MovieDB       | Open Movie Database                                                             |
 
 ## Usable Similarity Methods
-We used the string similarity framework by Baltes et. al [1]. The table below lists all string similarity methods that can be used. Note, that for `n` you can use the values `n=2,3,4,5`. 
+We used the string similarity framework by Baltes et. al [[1](#references)]. The table below lists all string similarity methods that can be used. Note, that for `n` you can use the values `n=2,3,4,5`. 
 
 | Category      | Methods                                                           |
 | ------------- |-------------------------------------------------------------------|
