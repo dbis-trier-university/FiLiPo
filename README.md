@@ -2,12 +2,36 @@
 FiLiPo (Finding Linkge Points) is a data integration tool. It is used to align the schemes of a local Knowledge Base and a Web API. 
 
 ## How to use the Programme
+To be done..
 
 ## Aligned Datasets
-| Local Knowledge Base | Aligned Web API                                                          |
-| ------------- |---------------------------------------------------------------------------------|
-| dblp          | CrossRef, SciGraph, Semantic Scholar (DOI), Semantic Scholar (ArXiv-Key), ArXiv |
-| MovieDB       | Open Movie Database                                                             |
+| Local Knowledge Base  | Aligned Web API                                                                           |
+| --------------------- |-------------------------------------------------------------------------------------------|
+| dblp                  | CrossRef, SciGraph, Semantic Scholar (DOI), Semantic Scholar (ArXiv-Key), ArXiv, Elsevier |
+| Linked Movie DB       | Open Movie Database                                                                       |
+
+## Usability
+The average values were calculated by performing three test series. In all test series the precision and recall were determined. Then the average for this table was determined. The first table shows our results when using the regular expression approach.
+
+| Aligning (RegExer)                    | Sample<br>Size | Mean<br>Precision | Mean<br>Recall | F1 Score |
+| --------------------------------------|----------------|-------------------|----------------|----------|
+| dblp - CrossRef (DOI)                 | 100            | 0.91              | 0.79           | 0.84     |
+| dblp - SciGraph (DOI)                 | 100            | 0.85              | 0.76           | 0.80     |
+| dblp - Semantic Scholar (DOI)         | 100            | 0.93              | 1.00           | 0.96     |
+| dblp - Semantic Scholar (ArXiv-Key)   | 100            | 1.00              | 1.00           | 1.00     |
+| dblp - Arxiv (ArXiv-Key)              | 100            | 1.00              | 1.00           | 1.00     |
+| dblp - elsevier (DOI)                 | 400            | 0.97              | 0.69           | 0.81     |
+
+The second table shows our results when using the gradient boosting classifier instead of the regular expression approach.
+
+| Aligning (GB Classifier)              | Sample<br>Size | Mean<br>Precision | Mean<br>Recall | F1 Score |
+| --------------------------------------|----------------|-------------------|----------------|----------|
+| dblp - CrossRef                       | 100            | 0.99              | 0.76           | 0.86     |
+| dblp - SciGraph                       | 100            | 0.94              | 0.67           | 0.78     |
+| dblp - Semantic Scholar (DOI)         | 100            | 0.92              | 1.00           | 0.96     |
+| dblp - Semantic Scholar (ArXiv-Key)   | 100            | 1.00              | 1.00           | 1.00     |
+| dblp - Arxiv                          | 100            | 0.89              | 1.00           | 0.94     |
+| dblp - elsevierDOI                    | 400            | 0.96              | 0.72           | 0.83     |
 
 ## Usable Similarity Methods
 We used the string similarity framework by Baltes et. al [[1](#references)]. The table below lists all string similarity methods that can be used. Note, that for `n` you can use the values `n=2,3,4,5`. 
@@ -97,3 +121,10 @@ This section of the `config.json` file is used to add rules (similar to an regul
 ```
 ## References
 1. String-Similarity by Baltes et. al, [GitHub](https://github.com/sotorrent/string-similarity), [![DOI](https://zenodo.org/badge/98212408.svg)](https://zenodo.org/badge/latestdoi/98212408)
+2. dblp
+3. Linked Movie DB
+4. CrossRef 
+5. SciGraph
+6. Semantic Scholar (DOI)
+7. Semantic Scholar (ArXiv-Key)
+8. Open Movie Database
