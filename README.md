@@ -3,8 +3,14 @@ FiLiPo (Finding Linkge Points) is a data integration tool. It is used to align t
 
 ## How to use the Programme
 
+## Aligned Datasets
+| Local Knowledge Base | Aligned Web API                                                          |
+| ------------- |---------------------------------------------------------------------------------|
+| dblp          | CrossRef, SciGraph, Semantic Scholar (DOI), Semantic Scholar (ArXiv-Key), ArXiv |
+| MovieDB       | Open Movie Database                                                             |
+
 ## Usable Similarity Methods
-The table below lists all string similarity methods that can be used. Note, that for `n` you can use the values `n=2,3,4,5`. 
+We used the string similarity framework by Baltes et. al [1]. The table below lists all string similarity methods that can be used. Note, that for `n` you can use the values `n=2,3,4,5`. 
 
 | Category      | Methods                                                           |
 | ------------- |-------------------------------------------------------------------|
@@ -89,3 +95,5 @@ This section of the `config.json` file is used to add rules (similar to an regul
     }
   ]
 ```
+## References
+1. String-Similarity by Baltes et. al, [GitHub](https://github.com/sotorrent/string-similarity), [![DOI](https://zenodo.org/badge/98212408.svg)](https://zenodo.org/badge/latestdoi/98212408)
