@@ -6,10 +6,10 @@ FiLiPo is a system designed to simplify data integration. To do this, it determi
   * Demo Video: [Link](https://basilika.uni-trier.de/nextcloud/s/vN3Za1gpHmOAEuR)
 
 ## Aligned Datasets
-| Local Knowledge Base  | Aligned Web API                                                                           |
-| --------------------- |-------------------------------------------------------------------------------------------|
-| dblp                  | CrossRef, SciGraph, Semantic Scholar (DOI), Semantic Scholar (ArXiv-Key), ArXiv, Elsevier |
-| Linked Movie DB       | Open Movie Database                                                                       |
+| Local Knowledge Base  | Aligned Web API                                                                                             |
+| --------------------- |-------------------------------------------------------------------------------------------------------------|
+| dblp[2]               | CrossRef[4], SciGraph[5], Semantic Scholar (DOI)[6], Semantic Scholar (ArXiv-Key)[6], ArXiv[7], Elsevier[8] |
+| Linked Movie DB[3]    | Open Movie Database API[9]                                                                                  |
 
 ## Usability
 The average values were calculated by performing three test series. In all test series the precision and recall were determined. Then the average for this table was determined. The first table shows our results when using the regular expression approach.
@@ -124,7 +124,7 @@ This section of the `config.json` file is used to add rules (similar to an regul
 ```
 ## References
 1. String-Similarity by Baltes et. al, [GitHub](https://github.com/sotorrent/string-similarity), [![DOI](https://zenodo.org/badge/98212408.svg)](https://zenodo.org/badge/latestdoi/98212408)
-2. dblp
+2. [dblp](https://dblp.uni-trier.de/)
 3. [Linked Movie DB](http://www.cs.toronto.edu/~oktie/linkedmdb/linkedmdb-18-05-2009-dump.nt)
 4. [CrossRef API](https://www.crossref.org/services/metadata-delivery/rest-api/)
 5. [SciGraph API](https://scigraph.springernature.com/explorer/api/)
