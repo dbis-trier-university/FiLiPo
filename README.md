@@ -125,9 +125,10 @@ This section of the `config.json` file is used to add rules (similar to an regul
 ## References
 1. String-Similarity by Baltes et. al, [GitHub](https://github.com/sotorrent/string-similarity), [![DOI](https://zenodo.org/badge/98212408.svg)](https://zenodo.org/badge/latestdoi/98212408)
 2. dblp
-3. Linked Movie DB
-4. CrossRef 
-5. SciGraph
-6. Semantic Scholar (DOI)
-7. Semantic Scholar (ArXiv-Key)
-8. Open Movie Database
+3. [Linked Movie DB](http://www.cs.toronto.edu/~oktie/linkedmdb/linkedmdb-18-05-2009-dump.nt)
+4. [CrossRef API](https://www.crossref.org/services/metadata-delivery/rest-api/)
+5. [SciGraph API](https://scigraph.springernature.com/explorer/api/)
+6. [Semantic Scholar](https://api.semanticscholar.org)
+7. [Arxiv API](https://arxiv.org/help/api)
+8. [Elsevier API](https://api.elsevier.com)
+9. [Open Movie Database API](http://www.omdbapi.com)
