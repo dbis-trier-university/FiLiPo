@@ -9,7 +9,7 @@ FiLiPo is a system designed to simplify data integration. To do this, it determi
 | Local Knowledge Base  | Aligned Web API                                                                                             |
 | --------------------------------- |-------------------------------------------------------------------------------------------------------------|
 | dblp[[2](#references)]            | CrossRef[[4](#references)], SciGraph[[5](#references)], Semantic Scholar (DOI)[[6](#references)], Semantic Scholar (ArXiv-Key)[[6](#references)], ArXiv[[7](#references)], Elsevier[[8](#references)] |
-| Linked Movie DB[3][(#references)] | Open Movie Database API[[9](#references)]                                                                                 |
+| Linked Movie DB[[3][(#references)] | Open Movie Database API[[9](#references)]                                                                                 |
 
 ## Usability
 The average values were calculated by performing three test series. In all test series the precision and recall were determined. Then the average for this table was determined. The first table shows our results when using the regular expression approach.
