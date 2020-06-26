@@ -3,9 +3,7 @@ FiLiPo is a system designed to simplify data integration. To do this, it determi
 
 ## Publications
 * Submitted to CIKM 2020 Demo Track
-
-## How to use the Programme
-To be done..
+  * Demo Video: [Link](https://basilika.uni-trier.de/nextcloud/s/vN3Za1gpHmOAEuR)
 
 ## Aligned Datasets
 | Local Knowledge Base  | Aligned Web API                                                                           |
