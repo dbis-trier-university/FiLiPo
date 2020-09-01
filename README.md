@@ -4,7 +4,7 @@ FiLiPo is a system designed to simplify data integration. To do this, it determi
 ## Publications
 * Submitted to CIKM 2020 Demo Track: [PDF](https://www.uni-trier.de/fileadmin/fb4/prof/INF/DBI/Publikationen/submitted_cikm2020_zeimetz_schenkel.pdf)
   * Demo Video: [Link](https://basilika.uni-trier.de/nextcloud/s/vN3Za1gpHmOAEuR)
-  * Code: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4010483.svg)](https://doi.org/10.5281/zenodo.4010483)
+  * Original Code: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4010483.svg)](https://doi.org/10.5281/zenodo.4010483)
 
 ## Aligned Datasets
 | Local Knowledge Base  | Aligned Web API                                                                                             |
