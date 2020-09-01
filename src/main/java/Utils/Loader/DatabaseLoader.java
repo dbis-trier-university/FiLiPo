@@ -85,6 +85,30 @@ public class DatabaseLoader {
         }
     }
 
+    public static List<String[]> getSelection(String apiName){
+        JSONObject apiConfig = getApiConfiguration(apiName);
+        JSONArray array = apiConfig.getJSONArray("selection");
+
+        List<String[]> list = new LinkedList<>();
+        for (int i = 0; i < array.length(); i++) {
+            String[] tmp = array.getJSONObject(i).getString("type").split(", ");
+            list.add(tmp);
+        }
+
+        return list;
+    }
+
+    public static boolean existsSelection(String apiName){
+       try{
+           JSONObject apiConfig = getApiConfiguration(apiName);
+           JSONArray array = apiConfig.getJSONArray("selection");
+
+           return true;
+       } catch (Exception e){
+           return false;
+       }
+    }
+
     /*******************************************************************************************************************
      *  Support and Confidence Database
      ******************************************************************************************************************/

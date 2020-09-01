@@ -103,11 +103,13 @@ public class TripleAnalyzer extends FilterSinkRDF {
 
         // Subject type is unknown
         } else {
-            Triple t;
-
-            if(triple.getSubject().isURI()){
+            if(triple.getSubject().isURI()) {
                 Node s = NodeFactory.createURI("http://www.w3.org/2002/07/owl#Thing");
-                replaceTriple(s,triple);
+                replaceTriple(s, triple);
+
+            } else if(triple.getSubject().isBlank()){
+                Node s = NodeFactory.createURI("http://www.w3.org/2002/07/owl#Blank");
+                replaceTriple(s, triple);
             } else {
                 Node s = NodeFactory.createURI("http://www.w3.org/2000/01/rdf-schema#Literal");
                 replaceTriple(s,triple);

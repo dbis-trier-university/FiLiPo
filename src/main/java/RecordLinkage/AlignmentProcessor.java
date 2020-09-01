@@ -12,7 +12,6 @@ import Utils.Loader.SchemaLoader;
 import Utils.ReaderWriter.DiskReader;
 import Utils.ReaderWriter.DiskWriter;
 import Utils.Utils;
-import WebApi.ArgumentException;
 import WebApi.GeneralWebApi;
 import WebApi.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,10 +23,7 @@ import org.apache.jena.query.ResultSetFormatter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -50,10 +46,12 @@ public class AlignmentProcessor {
     private Map<String, List<Integer>> candidateOffsetMap = new HashMap<>();        // Map<Predicate, List<Offsets Values>>
     private Map<String,List<HttpResponse>> candidateResponseMap = new HashMap<>();  // Map<Predicate, List of API Responses>
     private Map<String,Integer> candidateMap = new HashMap<>();                     // Map<Predicate, Number of Responses>
+    private Map<String,List<Pair<String,String>>> sampleEntities = new HashMap<>();
     private List<Set<Pair<String,String>>> matchingRecords = new LinkedList<>();
     private List<Set<Pair<String,String>>> nonMatchingRecords = new LinkedList<>();
     private Map<String, Map<String,LinkedList<String[]>>> links = new HashMap<>();  // Map<Input Relation, Map<Local Relation, List<String[Remote Relation, Metric, Similarity]>>>
     private Map<String,Pair<Long,Integer>> responseTimeMap = new HashMap<>();
+    private Map<String,List<Pair<String,String>>> inputValues = new HashMap<>();
 
     public AlignmentProcessor(String apiName, String dbName, int candidateRequests, int similarityRequests,
                               double stringSimThreshold, double recordSimThreshold)
@@ -115,16 +113,16 @@ public class AlignmentProcessor {
 
         // Compute support and confidence values
         Pair<Map<String,Double>,Map<String,Double>> supportConfidence = null;
-        if(calcSupportAndConfidence){
-            supportConfidence = JointFeatureProcessor.determineJointFeatures(matchingRecords, nonMatchingRecords);
+        if(calcSupportAndConfidence && !DatabaseLoader.existsSelection(apiName)){
+            supportConfidence = JointFeatureProcessor.determineJointFeatures(apiName, matchingRecords, nonMatchingRecords);
 
-            if(supportConfidence.getKey() == null || (supportConfidence.getKey() != null && supportConfidence.getKey().size() > 0))
+            if(supportConfidence.getKey() == null || (supportConfidence.getKey() != null && supportConfidence.getKey().size() <= 0))
                 System.out.println("[detectLinkagePoints]: No support and confidence values found..");
         }
 
         // Create function store and write matching records to hard disk
-        System.out.println("[detectLinkagePoints]: Write alignments to disk..");
-        FunctionStoreManager.createFunctionStore(this.apiName,this.dbName,this.similarityRequests,
+        System.out.println("[detectLinkagePoints]: Write alignments to disk and update database configurations..");
+        OutputManager.createFiles(this.apiName,this.dbName,this.similarityRequests,
                 this.stringSimThreshold,this.recordSimThreshold,this.matchingRecords.size(),this.responseTimeMap,alignments,supportConfidence);
     }
 
@@ -156,9 +154,11 @@ public class AlignmentProcessor {
                     // Not all requests result in a valid response.
                     for (int i = 0; i < this.similarityRequests - responses.size();i++){pb.step();}
 
+                    List<Pair<String,String>> valueList = this.sampleEntities.get(candidate.getKey());
+
                     // Iterate over all responses that got collected during the candidate set phase
                     for (int i = 0; i < responses.size(); i++) {
-                        List<QuerySolution> localKnowledge = KnowledgeBaseManagement.getCompleteEntry(dbName, candidate.getKey(), requested.get(i));
+                        List<QuerySolution> localKnowledge = KnowledgeBaseManagement.getCompleteEntry(this.dbName,valueList.get(i).getValue());
 
                         // Filter application type and check if response is json. If not: convert the XML string to a JSON
                         // string and flatten afterwards. If yes: just flatten the JSON tree (output is a dictionary/map)
@@ -166,9 +166,9 @@ public class AlignmentProcessor {
                         Map<String, Object> apiResponse = ResponseConverter.convertResponse(responses.get(i));
 
                         // Request all information stored about the entity (also traverse over the graph)
-                        Set<Pair<String, String>> fullKnowledge = KnowledgeBaseManagement.getFullKnowledge(this.dbName, inputType, candidate.getKey(), requested.get(i), localKnowledge);
+                        Set<Pair<String, String>> fullKnowledge = KnowledgeBaseManagement.getFullKnowledge(this.dbName, inputType, valueList.get(i).getValue(), localKnowledge);
 
-                        Map<String, LinkedList<String[]>> relationMetrics = calculatePotentialLinkagePoints(KnowledgeBaseManagement.getPredicateValue(dbName, candidate.getKey(), requested.get(i)), apiResponse, fullKnowledge);
+                        Map<String, LinkedList<String[]>> relationMetrics = calculatePotentialLinkagePoints(valueList.get(i).getKey(), apiResponse, fullKnowledge);
 
                         // Calculate overall record similarity, if high enough add to list of meaningful results
                         boolean enoughOverlapping = (apiResponse.size() > localKnowledge.size()
@@ -241,6 +241,7 @@ public class AlignmentProcessor {
         if(classifier != null) classifier.close();
     }
 
+    // TODO Boost Speed
     private void removeErrorResponses(){
         double threshold = ConfigurationLoader.getErrorThreshold();
 
@@ -923,7 +924,7 @@ public class AlignmentProcessor {
                     int maxNumber;
                     if(numberOfEntities == -1) {
                         System.out.println("Request number of possible values of " + predicate);
-                        maxNumber = KnowledgeBaseManagement.getNumberOfEntities(dbName, predicate);
+                        maxNumber = KnowledgeBaseManagement.getNumberOfEntities(dbName, inputType, predicate);
                     }
                     else maxNumber = numberOfEntities;
 
@@ -934,26 +935,28 @@ public class AlignmentProcessor {
 
                     List<Integer> offsetList = new LinkedList<>();
                     List<HttpResponse> responseList = new LinkedList<>();
-                    for (int i = 0; i < loops;) {
-                        Random rand = new Random();
-                        int offset = rand.nextInt(maxNumber);
-                        while (offsetList.contains(offset)) { offset = rand.nextInt(maxNumber); }
+                    if(DatabaseLoader.existsSelection(apiName)){
+                        List<Pair<String,String>> valueList = KnowledgeBaseManagement.getPredicateValuesArray(dbName,predicate,apiName,similarityRequests);
+                        this.sampleEntities.put(predicate,valueList);
 
-                        // change that also more than one API parameter is possible (future task)
-                        String value = KnowledgeBaseManagement.getPredicateValue(dbName,predicate,offset);
-                        if(value == null){
-                            if(DEBUG > 1) System.out.println("[getCandidateSet]: Null " + offsetList.size());
-                            if(offsetList.size() >= loops) break;
-                            else continue;
+                        for (int i = 0; i < loops; i++) {
+                            doApiRequest(valueList.get(i).getKey(),predicate,i,offsetList,responseList);
+                            pb.step();
                         }
+                    } else {
+                        List<Pair<String,String>> valueList = KnowledgeBaseManagement.getPredicateValues(dbName,inputType,predicate,similarityRequests);
+                        this.sampleEntities.put(predicate,valueList);
 
-                        // Request Web API and add the response to responseList
-                        doApiRequest(value,predicate,offset,offsetList,responseList);
-                        i++;
-                        pb.step();
+                        for (int i = 0; i < loops;) {
+                            // Request Web API and add the response to responseList
+                            doApiRequest(valueList.get(i).getKey(),predicate,i,offsetList,responseList);
+
+                            i++;
+                            pb.step();
+                        }
                     }
 
-                    // Only used for progress bar
+                    // Only used for progress bar in case we have less loops
                     for (int i = 0; i < this.candidateRequests-loops; i++) {pb.step();}
 
                     candidateOffsetMap.put(predicate,offsetList);
@@ -979,23 +982,38 @@ public class AlignmentProcessor {
             List<HttpResponse> responses, List<Set<Pair<String,String>>> nonMatchingRecords, ProgressBar pb)
     {
         int size = candidateRequests > numberOfEntitiesMap.get(candidate.getKey()) ? numberOfEntitiesMap.get(candidate.getKey()) : similarityRequests;
-        for (int i = this.candidateRequests; i < size; i++) {
-            Random rand = new Random();
-            int offset = rand.nextInt(numberOfEntitiesMap.get(candidate.getKey()));
-            while (requested.contains(offset)) offset = rand.nextInt(numberOfEntitiesMap.get(candidate.getKey()));
 
-            String value = KnowledgeBaseManagement.getPredicateValue(dbName, candidate.getKey(), offset);
-            boolean sucessful = doApiRequest(value, candidate.getKey(), offset, requested, responses);
+        if(DatabaseLoader.existsSelection(apiName)){
+            List<Pair<String,String>> valueList = this.sampleEntities.get(candidate.getKey());
 
-            if (DEBUG > 1) System.out.println("[getAdditional]: Request Status " + sucessful);
+            for (int i = this.candidateRequests; i < size; i++) {
+                boolean successful = doApiRequest(valueList.get(i).getKey(), candidate.getKey(), (candidateRequests+i), requested, responses);
 
-            if(!sucessful) {
-                List<QuerySolution> localKnowledge = KnowledgeBaseManagement.getCompleteEntry(dbName, candidate.getKey(), offset);
-                Set<Pair<String, String>> fullKnowledge = KnowledgeBaseManagement.getFullKnowledge(this.dbName, this.inputType, candidate.getKey(), offset, localKnowledge);
-                nonMatchingRecords.add(fullKnowledge);
+                if(!successful) {
+                    List<QuerySolution> localKnowledge = KnowledgeBaseManagement.getCompleteEntryWithSelection(dbName, apiName, candidate.getKey(), (candidateRequests+1+i));
+                    Set<Pair<String, String>> fullKnowledge = KnowledgeBaseManagement.getFullKnowledge(this.dbName, inputType,valueList.get(i).getValue(),localKnowledge);
+                    nonMatchingRecords.add(fullKnowledge);
+                }
+
+                pb.step();
             }
 
-            pb.step();
+        } else {
+            List<Pair<String,String>> valueList = this.sampleEntities.get(candidate.getKey());
+
+            for (int i = this.candidateRequests; i < size;i++) {
+                boolean successful = doApiRequest(valueList.get(i).getKey(), candidate.getKey(), i, requested, responses);
+
+                if (DEBUG > 1) System.out.println("[getAdditional]: Request Status " + successful);
+
+                if(!successful) {
+                    List<QuerySolution> localKnowledge = KnowledgeBaseManagement.getCompleteEntry(this.dbName, valueList.get(i).getValue());
+                    Set<Pair<String, String>> fullKnowledge = KnowledgeBaseManagement.getFullKnowledge(this.dbName, this.inputType, valueList.get(i).getValue(),localKnowledge);
+                    nonMatchingRecords.add(fullKnowledge);
+                }
+
+                pb.step();
+            }
         }
     }
 
@@ -1057,7 +1075,7 @@ public class AlignmentProcessor {
             }
 
         // for the case of some general and server errors
-        } catch (ArgumentException | UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             status = false;
         }

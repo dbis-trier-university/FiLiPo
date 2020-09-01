@@ -1,6 +1,7 @@
 package RecordLinkage;
 
 import Utils.Loader.ConfigurationLoader;
+import Utils.ReaderWriter.DiskReader;
 import javafx.util.Pair;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
@@ -11,25 +12,31 @@ import org.apache.jena.update.UpdateExecutionFactory;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
 import org.apache.jena.update.UpdateRequest;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-class FunctionStoreManager {
+class OutputManager {
 
     static int offset = 0;
+    static JSONObject database;
 
-    static void createFunctionStore(String apiName, String dbName, int similarityRequests,
-                                    double stringSimilarity, double recordSimilarity, double responses,
-                                    Map<String,Pair<Long,Integer>> responseTimeMap,
-                                    Map<String,Map<String,Map<String,Pair<String,Integer>>>> linkagePoints,
-                                    Pair<Map<String,Double>,Map<String,Double>> supportConfidence)
+    static void createFiles(String apiName, String dbName, int similarityRequests,
+                            double stringSimilarity, double recordSimilarity, double responses,
+                            Map<String,Pair<Long,Integer>> responseTimeMap,
+                            Map<String,Map<String,Map<String,Pair<String,Integer>>>> alignments,
+                            Pair<Map<String,Double>,Map<String,Double>> supportConfidence)
     {
         String functionStorePath = ConfigurationLoader.getOutputPath() + "functionstore/functionstore.ttl";
+        database = new JSONObject(DiskReader.readFile(ConfigurationLoader.getDatabasePath()));
+
         initFunctionStore(functionStorePath);
-        writeFunctionStore(apiName, dbName, similarityRequests,stringSimilarity,recordSimilarity,responses,responseTimeMap,linkagePoints,supportConfidence);
+        writeFunctionStore(apiName, dbName, similarityRequests,stringSimilarity,recordSimilarity,responses,responseTimeMap,alignments,supportConfidence);
     }
 
     private static void initFunctionStore(String functionStorePath){
@@ -113,23 +120,47 @@ class FunctionStoreManager {
         }
 
         // Support and Confidence
-        if(supportConfidence != null) {
+        if(supportConfidence != null && supportConfidence.getKey().size() > 0 && supportConfidence.getValue().size() > 0) {
             Map<String,Double> support = supportConfidence.getKey();
             Map<String,Double> confidence = supportConfidence.getValue();
 
-            int id = 1;
-            for(Map.Entry<String,Double> supportEntry : support.entrySet()){
-                // Build link to entity
-                String responseEnhancement = "<http://localhost/f/" + apiName + (id++) + ">";
-                insertQuery.append(subject).append(" fs:responseEnhancement ").append(responseEnhancement).append(" .");
+            JSONArray apiArray = database.getJSONArray("apis");
+            JSONArray array;
+            for (int i = 0; i < apiArray.length(); i++) {
+                JSONObject obj = apiArray.getJSONObject(i);
+                String tmp = obj.getString("label");
+                if(tmp.equalsIgnoreCase(apiName)){
+                    try{
+                        array = obj.getJSONArray("selection");
 
-                // Build information for the entity
-                insertQuery.append(responseEnhancement).append(" a ").append("fs:ResponseFeature .");
-                insertQuery.append(responseEnhancement).append(" fs:apiName ").append("\"").append(apiName).append("\" .");
-                insertQuery.append(responseEnhancement).append(" fs:value ").append("\"").append(supportEntry.getKey()).append("\"").append(" .");
-                insertQuery.append(responseEnhancement).append(" fs:support ").append("\"").append(supportEntry.getValue()).append("\"").append(" .");
-                insertQuery.append(responseEnhancement).append(" fs:confidence ").append("\"").append(confidence.get(supportEntry.getKey())).append("\"").append(" .");
+                        for (int j = 0; j < array.length(); j++) {
+                            JSONObject selection = array.getJSONObject(i);
 
+                            // If support and Confidence is already determined with the same parameter values: Just update and calculate mean values
+                            if(selection.getDouble("min_support_match") == ConfigurationLoader.getMinSupportMatch()
+                                    && selection.getDouble("min_support_nonmatch") == ConfigurationLoader.getMinSupportNonMatch())
+                            {
+                                for(Map.Entry<String,Double> supportEntry : support.entrySet()) {
+                                    if(selection.getString("type").equalsIgnoreCase(supportEntry.getKey())) {
+                                        // Update values
+                                        double newSupport = (selection.getDouble("support") + supportEntry.getValue()) / 2;
+                                        double newConfidence = (selection.getDouble("confidence") + confidence.get(supportEntry.getKey())) / 2;
+
+                                        selection.put("support", newSupport);
+                                        selection.put("confidence", newConfidence);
+                                    }
+                                }
+                            } else {
+                                // Since we have new thresholds: Overwrite old configurations
+                                insertSupportConfidence(supportConfidence, obj);
+                            }
+                        }
+
+                    } catch (JSONException e){
+                        // No support and confidence values available: Write the new ones in the database configuration file
+                        insertSupportConfidence(supportConfidence, obj);
+                    }
+                }
             }
         }
 
@@ -149,16 +180,34 @@ class FunctionStoreManager {
         insertProcessor.execute();
     }
 
+    private static void insertSupportConfidence(Pair<Map<String,Double>,Map<String,Double>> supportConfidence, JSONObject obj){
+        JSONArray array = new JSONArray();
+        Map<String,Double> support = supportConfidence.getKey();
+        Map<String,Double> confidence = supportConfidence.getValue();
+
+        for(Map.Entry<String,Double> supportEntry : support.entrySet()) {
+            JSONObject selectionEntry = new JSONObject();
+            selectionEntry.put("type",supportEntry.getKey());
+            selectionEntry.put("support",supportEntry.getValue());
+            selectionEntry.put("confidence",confidence.get(supportEntry.getKey()));
+            selectionEntry.put("min_support_match",ConfigurationLoader.getMinSupportMatch());
+            selectionEntry.put("min_support_nonmatch",ConfigurationLoader.getMinSupportNonMatch());
+            array.put(selectionEntry);
+        }
+
+        obj.put("selection", array);
+    }
+
     private static void writeFunctionStore(String apiName, String dbName, int similarityRequests,
                                            double stringSimilarity, double recordSimilarity, double responses,
                                            Map<String,Pair<Long,Integer>> responseTimeMap,
-                                           Map<String, Map<String,Map<String,Pair<String,Integer>>>> linkagePoints,
+                                           Map<String, Map<String,Map<String,Pair<String,Integer>>>> alignments,
                                            Pair<Map<String,Double>,Map<String,Double>> supportConfidence)
     {
         String functionStorePath = ConfigurationLoader.getOutputPath() + "functionstore/functionstore.ttl";
         Dataset data = RDFDataMgr.loadDataset(functionStorePath);
 
-        for(Map.Entry<String, Map<String,Map<String,Pair<String,Integer>>>> preConditionMap : linkagePoints.entrySet()){
+        for(Map.Entry<String, Map<String,Map<String,Pair<String,Integer>>>> preConditionMap : alignments.entrySet()){
             String preCondition = preConditionMap.getKey();
 
             for(Map.Entry<String,Map<String,Pair<String,Integer>>> localRelationMap : preConditionMap.getValue().entrySet()){
@@ -239,6 +288,33 @@ class FunctionStoreManager {
                     e.printStackTrace();
                 }
             }
+        }
+
+        //JSONObject database = new JSONObject(DiskReader.readFile(ConfigurationLoader.getDatabasePath()));
+        JSONArray array = database.getJSONArray("apis");
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject tmp = array.getJSONObject(i);
+            if(tmp.getString("label").equals(apiName)){
+                JSONObject obj = tmp.getJSONArray("parameters").getJSONObject(0);
+
+                JSONArray filterArray = new JSONArray();
+                for(Map.Entry<String, Map<String,Map<String,Pair<String,Integer>>>> preCondition : alignments.entrySet()){
+                    filterArray.put(preCondition.getKey());
+                }
+
+                obj.put("filter",filterArray);
+            }
+        }
+
+        // Write support and confidence in database.json
+        String databasePath = ConfigurationLoader.getDatabasePath();
+        FileWriter file;
+        try {
+            file = new FileWriter(databasePath);
+            file.write(database.toString());
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         data.end();

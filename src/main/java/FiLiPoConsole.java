@@ -54,6 +54,8 @@ public class FiLiPoConsole {
 
         final long timeEnd = System.currentTimeMillis();
         long time = ((timeEnd - timeStart) / 1000);
-        System.out.println("Done: " + (time/60) + ":" + (time % 60) + " Minutes");
+        long minutes = (time / 60);
+        long seconds = (time % 60);
+        System.out.println("Done: " + minutes + ":" + (seconds < 10 ? "0" + seconds : seconds) + " Minutes");
     }
 }

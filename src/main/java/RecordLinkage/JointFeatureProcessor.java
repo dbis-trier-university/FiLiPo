@@ -1,12 +1,14 @@
 package RecordLinkage;
 
+import QueryManagement.KnowledgeBaseManagement;
 import Utils.Loader.ConfigurationLoader;
+import Utils.Loader.DatabaseLoader;
 import javafx.util.Pair;
 
 import java.util.*;
 
 class JointFeatureProcessor {
-    static Pair<Map<String,Double>,Map<String,Double>> determineJointFeatures(List<Set<Pair<String,String>>> matchingRecords, List<Set<Pair<String,String>>> nonMatchingRecords){
+    static Pair<Map<String,Double>,Map<String,Double>> determineJointFeatures(String apiName, List<Set<Pair<String,String>>> matchingRecords, List<Set<Pair<String,String>>> nonMatchingRecords){
         // Calculate support for matching records
         Map<String,Map<String,Integer>> implicitSupportMap = computeImplicitSupport(matchingRecords);
         Map<String,Integer> simpleSupportMap = computeSimpleSupport(matchingRecords);
@@ -17,7 +19,7 @@ class JointFeatureProcessor {
         Map<String,Double> relativeSupportMapNM = computeRelativeSupport(implicitSupportMapNM,nonMatchingRecords.size(),ConfigurationLoader.getMinSupportNonMatch());
 
         // Calculate the real support and confidence values
-        filterSelectiveValues(relativeSupportMap,relativeSupportMapNM);
+        filterSelectiveValues(apiName,relativeSupportMap,relativeSupportMapNM);
         Map<String,Double> confidenceMap = computeConfidence(relativeSupportMap, implicitSupportMap,simpleSupportMap);
 
         return new Pair<>(relativeSupportMap,confidenceMap);
@@ -100,10 +102,16 @@ class JointFeatureProcessor {
         return relativeSupportMap;
     }
 
-    private static void filterSelectiveValues(Map<String,Double> matchingSupport, Map<String,Double> nonMatchingSupport){
-        matchingSupport.entrySet().removeIf(
-                innerEntry -> nonMatchingSupport.containsKey(innerEntry.getKey())
-        );
+    private static void filterSelectiveValues(String apiName, Map<String,Double> matchingSupport, Map<String,Double> nonMatchingSupport){
+        if(DatabaseLoader.existsSelection(apiName)){
+            matchingSupport.entrySet().removeIf(
+                    innerEntry -> innerEntry.getValue() < 1.0
+            );
+        } else {
+            matchingSupport.entrySet().removeIf(
+                    innerEntry -> nonMatchingSupport.containsKey(innerEntry.getKey())
+            );
+        }
     }
 
     private static Map<String,Double> computeConfidence(Map<String,Double> relativeSupportMap, Map<String,Map<String,Integer>> implicitSupport, Map<String,Integer> simpleSupport){

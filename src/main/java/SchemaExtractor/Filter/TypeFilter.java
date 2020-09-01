@@ -72,10 +72,14 @@ public class TypeFilter extends FilterSinkRDF {
     @Override
     public void triple(Triple triple) {
         for ( Node p : this.properties ) {
-            String subj = "<" + triple.getSubject().getURI() + "> ";
+            String subj;
+            if(triple.getSubject().isURI()) subj = "<" + triple.getSubject().getURI() + "> ";
+            else subj = "<" + triple.getSubject().getBlankNodeLabel() + "> ";
+
             String pred = "<" + triple.getPredicate().getURI() + "> ";
             String obj;
             if(triple.getObject().isURI()) obj = "<" + triple.getObject().getURI() + "> .";
+            else if(triple.getObject().isBlank()) obj = "<" + triple.getObject().getBlankNodeId().getLabelString() + "> . ";
             else obj = "\"" + StringEscapeUtils.escapeJava(triple.getObject().getLiteralLexicalForm()) + "\" .";
 
             // Types

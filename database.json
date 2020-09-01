@@ -2,92 +2,124 @@
   "endpoints": [
     {
       "label": "dblp",
-      "source": "C:/Databases/dblp-2020-04-28/dblp-2020-04-28.nt",
-      "url": "C:/Databases/dblp-2020-04-28/tdb/"
+      "source": "F:/Databases/dblp/dblp.nt",
+      "url": "F:/Databases/dblp/tdb/"
     },
     {
       "label": "moviedb",
-      "source": "C:/Databases/linked_mdb/fixed_linkedmdb.nt",
-      "url": "C:/Databases/linked_mdb/tdb"
+      "source": "F:/Databases/linked_mdb/fixed_linkedmdb.nt",
+      "url": "F:/Databases/linked_mdb/tdb"
     }
   ],
   "apis": [
     {
-      "label": "scigraphDOI",
+      "selection": [
+        {
+          "min_support_match": 0.3,
+          "confidence": 0.5882352941176471,
+          "min_support_nonmatch": 0.1,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#publishedBy, Springer",
+          "support": 0.38461538461538464
+        }
+      ],
       "name": "Springer SciGraph",
-      "url": "http://api.springernature.com/metadata/{format}?q=doi:{q}&api_key={key}",
+      "format": "json",
+      "label": "scigraphDOI",
       "parameters": [
-        {"name": "q", "status": "required", "type": "https://dblp.org/rdf/schema-2017-04-18#Publication"}
+        {
+          "filter": [
+            "http://www.wikidata.org/prop/direct/P356"
+          ],
+          "name": "q",
+          "type": "https://dblp.org/rdf/schema-2020-07-01#Publication",
+          "status": "required"
+        }
       ],
-      "format": "json"
+      "url": "http://api.springernature.com/metadata/{format}?q=doi:{q}&api_key={key}"
     },
     {
-      "label": "s2",
       "name": "Semantic Scholar",
-      "url": "    https://api.semanticscholar.org/v1/paper/{q}",
+      "format": "json",
+      "label": "s2",
       "parameters": [
-        {"name": "q", "status": "required", "type": "https://dblp.org/rdf/schema-2017-04-18#Publication"}
+        {
+          "name": "q",
+          "type": "https://dblp.org/rdf/schema-2017-04-18#Publication",
+          "status": "required"
+        }
       ],
-      "format": "json"
+      "url": "    https://api.semanticscholar.org/v1/paper/{q}"
     },
     {
-      "label": "s2arxiv",
       "name": "Semantic Scholar usin ArXiv ID",
-      "url": "    https://api.semanticscholar.org/v1/paper/arXiv:{q}",
+      "format": "json",
+      "label": "s2arxiv",
       "parameters": [
-        {"name": "q", "status": "required", "type": "https://dblp.org/rdf/schema-2017-04-18#Publication"}
+        {
+          "name": "q",
+          "type": "https://dblp.org/rdf/schema-2017-04-18#Publication",
+          "status": "required"
+        }
       ],
-      "format": "json"
+      "url": "    https://api.semanticscholar.org/v1/paper/arXiv:{q}"
     },
     {
-      "label": "crossrefDOI",
       "name": "CrossRef DOI API",
-      "url": "https://api.crossref.org/works/{doi}",
-      "parameters": [
-        {"name": "doi", "status": "required", "type": "https://dblp.org/rdf/schema-2017-04-18#Publication"}
-      ],
-      "format": "json"
-    },
-    {
-      "label": "arxiv",
-      "name": "arXiv",
-      "url": "http://export.arxiv.org/api/query?search_query=id:{doi}",
+      "format": "json",
+      "label": "crossrefDOI",
       "parameters": [
         {
           "name": "doi",
-          "status": "required",
           "type": "https://dblp.org/rdf/schema-2017-04-18#Publication",
-          "filter": [
-            "https://dblp.org/rdf/schema-2017-04-18#arxivKey"
-          ]
+          "status": "required"
         }
       ],
-      "format": "json"
+      "url": "https://api.crossref.org/works/{doi}"
     },
     {
-      "label": "elsevierDOI",
       "name": "arXiv",
-      "url": "https://api.elsevier.com/content/article/doi/{doi}?apiKey={key}",
-      "parameters": [
-        {"name": "doi", "status": "required", "type": "https://dblp.org/rdf/schema-2017-04-18#Publication"}
-      ],
-      "format": "json"
-    },
-    {
-      "label": "omdb",
-      "name": "omdb",
-      "url": "http://www.omdbapi.com/?t={id}&apikey={key}",
+      "format": "json",
+      "label": "arxiv",
       "parameters": [
         {
-          "name": "id",
-          "status": "required",
-          "type": "http://data.linkedmdb.org/resource/movie/film",
           "filter": [
-            "http://purl.org/dc/terms/title"
-          ]
+            "https://dblp.org/rdf/schema-2017-04-18#arxivKey"
+          ],
+          "name": "doi",
+          "type": "https://dblp.org/rdf/schema-2017-04-18#Publication",
+          "status": "required"
         }
       ],
-      "format": "json"
+      "url": "http://export.arxiv.org/api/query?search_query=id:{doi}"
+    },
+    {
+      "name": "arXiv",
+      "format": "json",
+      "label": "elsevierDOI",
+      "parameters": [
+        {
+          "name": "doi",
+          "type": "https://dblp.org/rdf/schema-2017-04-18#Publication",
+          "status": "required"
+        }
+      ],
+      "url": "https://api.elsevier.com/content/article/doi/{doi}?apiKey={key}"
+    },
+    {
+      "name": "omdb",
+      "format": "json",
+      "label": "omdb",
+      "parameters": [
+        {
+          "filter": [
+            "http://purl.org/dc/terms/title"
+          ],
+          "name": "id",
+          "type": "http://data.linkedmdb.org/resource/movie/film",
+          "status": "required"
+        }
+      ],
+      "url": "http://www.omdbapi.com/?t={id}&apikey={key}"
     }
   ]
 }

@@ -24,8 +24,8 @@
     "functionality_threshold": "0.996",
     "classifier": "regex",
 
-    "support_mode": "0",
-    "min_support_match": "0.5",
+    "support_mode": "1",
+    "min_support_match": "0.3",
     "min_support_nonmatch": "0.1",
 
     "similarity_metrics": [

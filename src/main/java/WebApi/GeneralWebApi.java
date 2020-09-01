@@ -46,7 +46,11 @@ public class GeneralWebApi {
                     if(url.charAt(url.indexOf("{"+p.getKey()+"}")-1) != '/'){
                         url = url.replace("{"+p.getKey()+"}", URLEncoder.encode(params[i], StandardCharsets.UTF_8.toString()));
                     } else {
-                        url = url.replace("{"+p.getKey()+"}",params[i]);
+                        try{
+                            url = url.replace("{"+p.getKey()+"}",params[i]);
+                        } catch (Exception e){
+                            System.out.println("ERROR: " + params[i]);
+                        }
                     }
                 } else {
                     url = url.replace("{"+p.getKey()+"}","");
@@ -66,7 +70,7 @@ public class GeneralWebApi {
 
     public String getUrl(){
         String url = this.getPlainUrl();
-        url = url.replace("{format}", this.getFormat());
+        if(url.contains("{format}")) url = url.replace("{format}", this.getFormat());
         try{
             String secret = ConfigurationLoader.getSecret(this.apiConfig.getString("label"));
             url = url.replace("{key}", Objects.requireNonNull(secret));
