@@ -123,6 +123,10 @@ This section of the `config.json` file is used to add rules (similar to an regul
     }
   ]
 ```
+
+## Updates
+* Version 1.1: :fire: **New Feature!** More information coming soon
+
 ## References
 1. String-Similarity by Baltes et. al, [GitHub](https://github.com/sotorrent/string-similarity), [![DOI](https://zenodo.org/badge/98212408.svg)](https://zenodo.org/badge/latestdoi/98212408)
 2. [dblp](https://dblp.uni-trier.de/)
