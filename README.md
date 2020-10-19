@@ -2,7 +2,12 @@
 FiLiPo is a system designed to simplify data integration. To do this, it determines a mapping between the schema of a local knowledge base and that of an API. This mapping specifies how the data can be integrated into the local Knowledge Base. The goal of FiLiPo was to enable non-technical users (e.g. data curators) to use this system. For this reason, only a few parameters need to be specified.
 
 ## Publications
-* Submitted to CIKM 2020 Demo Track: [PDF](https://www.uni-trier.de/fileadmin/fb4/prof/INF/DBI/Publikationen/submitted_cikm2020_zeimetz_schenkel.pdf)
+* Tobias Zeimetz, Ralf Schenkel<br/>
+  [FiLiPo: A Sample Driven Approach for Finding Linkage Points between RDF Knowledge Bases and Web APIs](https://www.uni-trier.de/fileadmin/fb4/prof/INF/DBI/Publikationen/edbt21_zeimetz_schenkel.pdf)<br/>
+  Submitted to EDBT 2021
+* Tobias Zeimetz, Ralf Schenkel<br/>
+  [Sample Driven Data Mapping for Linked Data and Web APIs](https://www.uni-trier.de/fileadmin/fb4/prof/INF/DBI/Publikationen/submitted_cikm2020_zeimetz_schenkel.pdf)<br/>
+  In CIKM Demo Track 2020
   * Demo Video: [Link](https://basilika.uni-trier.de/nextcloud/s/vN3Za1gpHmOAEuR)
   * Original Code: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4010483.svg)](https://doi.org/10.5281/zenodo.4010483)
 
