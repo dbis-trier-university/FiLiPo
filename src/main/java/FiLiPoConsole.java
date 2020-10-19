@@ -13,7 +13,7 @@ public class FiLiPoConsole {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("---------------");
-        System.out.println("| AID4SPARQL");
+        System.out.println("| FiLiPo");
         System.out.println("---------------");
 
         System.out.print("Knowledge Base: ");

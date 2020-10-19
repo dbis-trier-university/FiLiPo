@@ -38,7 +38,11 @@ class ResponseConverter {
             //noinspection unchecked
             result = new ObjectMapper().readValue(jsonString, HashMap.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            if(ConfigurationLoader.getLogLevel() >= 2){
+                System.out.println("[ResponseConverter.convertResponse]: " + e.getMessage());
+            }
+
+            return result;
         }
 
         return result;

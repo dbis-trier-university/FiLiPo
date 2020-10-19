@@ -59,6 +59,8 @@ public class DiskWriter<L,M,R> {
 
     public static void writeCsv(String path, List<String[]> list){
         try {
+            File file = new File(path.substring(0,path.lastIndexOf("/")));
+            file.mkdirs();
             FileWriter outputFile = new FileWriter(path);
             CSVWriter writer = new CSVWriter(outputFile);
 

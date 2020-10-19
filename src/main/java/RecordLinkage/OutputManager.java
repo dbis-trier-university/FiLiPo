@@ -137,8 +137,8 @@ class OutputManager {
                             JSONObject selection = array.getJSONObject(i);
 
                             // If support and Confidence is already determined with the same parameter values: Just update and calculate mean values
-                            if(selection.getDouble("min_support_match") == ConfigurationLoader.getMinSupportMatch()
-                                    && selection.getDouble("min_support_nonmatch") == ConfigurationLoader.getMinSupportNonMatch())
+                            if(selection.getDouble("min_support_match") == ConfigurationLoader.getMinSupport()
+                                    && selection.getDouble("min_support_nonmatch") == ConfigurationLoader.getMinConfidence())
                             {
                                 for(Map.Entry<String,Double> supportEntry : support.entrySet()) {
                                     if(selection.getString("type").equalsIgnoreCase(supportEntry.getKey())) {
@@ -190,8 +190,8 @@ class OutputManager {
             selectionEntry.put("type",supportEntry.getKey());
             selectionEntry.put("support",supportEntry.getValue());
             selectionEntry.put("confidence",confidence.get(supportEntry.getKey()));
-            selectionEntry.put("min_support_match",ConfigurationLoader.getMinSupportMatch());
-            selectionEntry.put("min_support_nonmatch",ConfigurationLoader.getMinSupportNonMatch());
+            selectionEntry.put("min_support_match",ConfigurationLoader.getMinSupport());
+            selectionEntry.put("min_support_nonmatch",ConfigurationLoader.getMinConfidence());
             array.put(selectionEntry);
         }
 

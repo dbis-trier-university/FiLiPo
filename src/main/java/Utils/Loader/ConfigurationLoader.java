@@ -157,14 +157,14 @@ public class ConfigurationLoader {
         return Integer.parseInt(linkageConf.getString("support_mode")) != 0;
     }
 
-    public static double getMinSupportMatch(){
+    public static double getMinSupport(){
         JSONObject linkageConf = loadLinkageConfig();
-        return Double.parseDouble(linkageConf.getString("min_support_match"));
+        return Double.parseDouble(linkageConf.getString("min_support"));
     }
 
-    public static double getMinSupportNonMatch(){
+    public static double getMinConfidence(){
         JSONObject linkageConf = loadLinkageConfig();
-        return Double.parseDouble(linkageConf.getString("min_support_nonmatch"));
+        return Double.parseDouble(linkageConf.getString("min_confidence"));
     }
 
     // Rule Set

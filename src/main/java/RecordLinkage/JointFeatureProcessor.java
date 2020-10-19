@@ -1,6 +1,5 @@
 package RecordLinkage;
 
-import QueryManagement.KnowledgeBaseManagement;
 import Utils.Loader.ConfigurationLoader;
 import Utils.Loader.DatabaseLoader;
 import javafx.util.Pair;
@@ -12,15 +11,17 @@ class JointFeatureProcessor {
         // Calculate support for matching records
         Map<String,Map<String,Integer>> implicitSupportMap = computeImplicitSupport(matchingRecords);
         Map<String,Integer> simpleSupportMap = computeSimpleSupport(matchingRecords);
-        Map<String,Double> relativeSupportMap = computeRelativeSupport(implicitSupportMap,matchingRecords.size(),ConfigurationLoader.getMinSupportMatch());
+        Map<String,Double> relativeSupportMap = computeRelativeSupport(implicitSupportMap,simpleSupportMap,matchingRecords.size(),ConfigurationLoader.getMinSupport());
 
         // Calculate support for non matching records (in order to filter predicate-object-pairs that are not selective)
         Map<String,Map<String,Integer>> implicitSupportMapNM =  computeImplicitSupport(nonMatchingRecords);
-        Map<String,Double> relativeSupportMapNM = computeRelativeSupport(implicitSupportMapNM,nonMatchingRecords.size(),ConfigurationLoader.getMinSupportNonMatch());
+        Map<String,Integer> simpleSupportMapNM = computeSimpleSupport(nonMatchingRecords);
+        Map<String,Double> relativeSupportMapNM = computeRelativeSupport(implicitSupportMapNM,simpleSupportMapNM,nonMatchingRecords.size(),ConfigurationLoader.getMinSupport());
 
         // Calculate the real support and confidence values
         filterSelectiveValues(apiName,relativeSupportMap,relativeSupportMapNM);
-        Map<String,Double> confidenceMap = computeConfidence(relativeSupportMap, implicitSupportMap,simpleSupportMap);
+        Map<String,Double> confidenceMap = computeConfidence(relativeSupportMap,implicitSupportMap,simpleSupportMap);
+        relativeSupportMap.entrySet().removeIf(entry -> !confidenceMap.containsKey(entry.getKey()));
 
         return new Pair<>(relativeSupportMap,confidenceMap);
     }
@@ -79,25 +80,20 @@ class JointFeatureProcessor {
         return simpleSupportMap;
     }
 
-    private static Map<String,Double> computeRelativeSupport(Map<String,Map<String,Integer>> map, double dataSize, double minSupport){
+
+    private static Map<String,Double> computeRelativeSupport(Map<String,Map<String,Integer>> implicit, Map<String,Integer> simple, int validMatches, double minSupport){
         Map<String,Double> relativeSupportMap = new HashMap<>();
 
-        for(Map.Entry<String,Map<String,Integer>> relation : map.entrySet()){
+        for(Map.Entry<String,Map<String,Integer>> entry : implicit.entrySet()){
+            for(Map.Entry<String,Integer> innerEntry : entry.getValue().entrySet()){
+                double supportValue = ((double) simple.get(entry.getKey()))/validMatches;
 
-            for(Map.Entry<String,Integer> value : relation.getValue().entrySet()){
-                double supportValue = value.getValue()/dataSize;
-
-                if(supportValue >= ConfigurationLoader.getCandidateResponses()){
-                    String key = relation.getKey() + ", " + value.getKey();
+                if(supportValue >= minSupport){
+                    String key = entry.getKey() + ", " + innerEntry.getKey();
                     relativeSupportMap.put(key,supportValue);
                 }
             }
         }
-
-        // Remove metrics and linkage points that have to less confidence
-        relativeSupportMap.entrySet().removeIf(
-                innerEntry -> innerEntry.getValue() < minSupport
-        );
 
         return relativeSupportMap;
     }
@@ -117,22 +113,20 @@ class JointFeatureProcessor {
     private static Map<String,Double> computeConfidence(Map<String,Double> relativeSupportMap, Map<String,Map<String,Integer>> implicitSupport, Map<String,Integer> simpleSupport){
         Map<String,Double> confidenceMap = new HashMap<>();
 
-        for(Map.Entry<String,Map<String,Integer>> relation : implicitSupport.entrySet()){
-            String simple = relation.getKey();
+        for(Map.Entry<String,Double> relativeEntry : relativeSupportMap.entrySet()){
+            String rel = relativeEntry.getKey().substring(0,relativeEntry.getKey().lastIndexOf(","));
+            String last = relativeEntry.getKey().substring(relativeEntry.getKey().lastIndexOf(",")+2);
 
-            for(Map.Entry<String,Integer> value : relation.getValue().entrySet()){
-                double implicitSupportValue = value.getValue();
-                double simpleSupportValue = simpleSupport.get(simple);
-
-                double confidence = implicitSupportValue/simpleSupportValue;
-                confidenceMap.put(simple + ", " + value.getKey(), confidence);
+            double erg;
+            try{
+                 erg = ((double) implicitSupport.get(rel).get(last))/simpleSupport.get(rel);
+            } catch (Exception e){
+                erg = 0;
             }
-        }
 
-        // Only for entries with a support that is high enough are of interest
-        confidenceMap.entrySet().removeIf(
-                entry -> !relativeSupportMap.containsKey(entry.getKey())
-        );
+            if(erg >= ConfigurationLoader.getMinConfidence())
+                confidenceMap.put(relativeEntry.getKey(),erg);
+        }
 
         return confidenceMap;
     }

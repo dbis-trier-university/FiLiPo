@@ -3,7 +3,6 @@
     "logpath":"res/log/",
     "outpath": "res/",
     "dbpath": "database.json",
-    "scpath": "supconf.json",
     "secretpath": "secrets.json",
     "ipc": "tcp://*:5555",
     "memory":"256",
@@ -15,18 +14,19 @@
     "similarity_requests": "100",
 
     "candidate_requests": "25",
-    "string_similarity": "0.5",
-    "record_similarity": "0.1",
+    "string_similarity": "0.7",
+    "record_similarity": "0.2",
+
     "distribution_variance": "0.4",
     "candidate_responses": "0.1",
-    "error_threshold": "0.8",
+    "error_threshold": "0.65",
     "traversal_depth": "2",
     "functionality_threshold": "0.996",
     "classifier": "regex",
 
-    "support_mode": "1",
-    "min_support_match": "0.3",
-    "min_support_nonmatch": "0.1",
+    "support_mode": "0",
+    "min_support": "0.5",
+    "min_confidence": "0.6",
 
     "similarity_metrics": [
       "Equal",
@@ -65,10 +65,6 @@
     {
       "name": "insensitive-uri",
       "filter": "/i"
-    },
-    {
-      "name": "fuzzy",
-      "filter": "/f"
     }
   ]
 }
