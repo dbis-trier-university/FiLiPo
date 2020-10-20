@@ -130,6 +130,7 @@ This section of the `config.json` file is used to add rules (similar to an regul
 ```
 
 ## Citing 
+If you find FiLiPo useful in your research, please consider citing the following paper:
 ```bibtex
 @inproceedings{filipo,
 author = {Zeimetz, Tobias and Schenkel, Ralf},
