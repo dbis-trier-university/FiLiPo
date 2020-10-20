@@ -129,8 +129,6 @@ This section of the `config.json` file is used to add rules (similar to an regul
   ]
 ```
 
--------------------------------------------------------------
-
 ## Citing 
 ```bibtex
 @inproceedings{filipo,
