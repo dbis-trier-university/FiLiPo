@@ -18,29 +18,24 @@ FiLiPo is a system designed to simplify data integration. To do this, it determi
 | Linked Movie DB[[3](#references)] | Open Movie Database API[[9](#references)]                                                                                 |
 
 ## Usability
-The average values were calculated by performing three test series. In all test series the precision and recall were determined. Then the average for this table was determined. The first table shows our results when using the regular expression approach.
+We have evaluated precision and recall of FiLiPo on several knowledge bases and Web APIs. The average values for precision and recall were calculated by performing mutliple test series. The runtime of FiLiPo was between 15-45 Minutes, depending on the sample size and the response time of the Web API.
 
-| Aligning (RegExer)                    | Sample<br>Size | Mean<br>Precision | Mean<br>Recall | F1 Score |
-| --------------------------------------|----------------|-------------------|----------------|----------|
-| dblp - CrossRef (DOI)                 | 100            | 0.91              | 0.79           | 0.84     |
-| dblp - SciGraph (DOI)                 | 100            | 0.85              | 0.76           | 0.80     |
-| dblp - Semantic Scholar (DOI)         | 100            | 0.93              | 1.00           | 0.96     |
-| dblp - Semantic Scholar (ArXiv-Key)   | 100            | 1.00              | 1.00           | 1.00     |
-| dblp - Arxiv (ArXiv-Key)              | 100            | 1.00              | 1.00           | 1.00     |
-| dblp - elsevier (DOI)                 | 400            | 0.97              | 0.69           | 0.81     |`
-| Linked Movie DB - OMDB API            | 100            | 0.81              | 0.92           | 0.86     |
-
-The second table shows our results when using the gradient boosting classifier instead of the regular expression approach.
-
-| Aligning (GB Classifier)              | Sample<br>Size | Mean<br>Precision | Mean<br>Recall | F1 Score |
-| --------------------------------------|----------------|-------------------|----------------|----------|
-| dblp - CrossRef                       | 100            | 0.99              | 0.76           | 0.86     |
-| dblp - SciGraph                       | 100            | 0.94              | 0.67           | 0.78     |
-| dblp - Semantic Scholar (DOI)         | 100            | 0.92              | 1.00           | 0.96     |
-| dblp - Semantic Scholar (ArXiv-Key)   | 100            | 1.00              | 1.00           | 1.00     |
-| dblp - Arxiv                          | 100            | 0.89              | 1.00           | 0.94     |
-| dblp - elsevierDOI                    | 400            | 0.96              | 0.72           | 0.83     |
-| Linked Movie DB - OMDB API            | 100            | 0.79              | 0.92           | 0.85     |
+| Aligning (RegExer)                    | Method | Sample<br>Size | Mean<br>Precision | Mean<br>Recall | F1 Score |
+| --------------------------------------|--------|----------------|-------------------|----------------|----------|
+| dblp - CrossRef (DOI)                 | RegEx  | 100            | 0.94              | 0.80           | 0.86     |
+| dblp - CrossRef (DOI)                 | GBC    | 100            | 0.92              | 0.79           | 0.85     |
+| dblp - SciGraph (DOI)                 | RegEx  | 100            | 1.00              | 0.88           | 0.93     |
+| dblp - SciGraph (DOI)                 | GBC    | 100            | 1.00              | 0.88           | 0.93     |
+| dblp - Semantic Scholar (DOI)         | RegEx  | 100            | 0.98              | 0.91           | 0.94     |
+| dblp - Semantic Scholar (DOI)         | GBC    | 100            | 0.98              | 0.84           | 0.91     |
+| dblp - Semantic Scholar (ArXiv-Key)   | RegEx  | 100            | 1.00              | 0.85           | 0.85     |
+| dblp - Semantic Scholar (ArXiv-key)   | GBC    | 100            | 1.00              | 0.87           | 0.87     |
+| dblp - elsevier (DOI)                 | RegEx  | 100            | 0.94              | 0.77           | 0.85     |
+| dblp - elsevier (DOI)                 | GBC    | 100            | 0.93              | 0.74           | 0.82     |
+| Linked Movie DB - OMDB API            | RegEx  | 100            | 0.91              | 0.82           | 0.86     |
+| Linked Movie DB - OMDB API            | GBC    | 100            | 1.00              | 0.51           | 0.68     |
+| dblp - ArXiv (ArXiv-Key)              | RegEx  | 100            | 1.00              | 1.00           | 1.00     |
+| dblp - ArXiv (ArXiv-Key)              | GBC    | 100            | 0.83              | 1.00           | 0.91     |
 
 ## Usable Similarity Methods
 We used the string similarity framework by Baltes et. al [[1](#references)]. The table below lists all string similarity methods that can be used. Note, that for `n` you can use the values `n=2,3,4,5`. 
