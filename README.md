@@ -129,6 +129,21 @@ This section of the `config.json` file is used to add rules (similar to an regul
   ]
 ```
 
+-------------------------------------------------------------
+
+## Citing 
+```bibtex
+@inproceedings{filipo,
+author = {Zeimetz, Tobias and Schenkel, Ralf},
+title = {Sample Driven Data Mapping for Linked Data and Web APIs},
+year = {2020},
+url = {https://doi.org/10.1145/3340531.3417438},
+doi = {10.1145/3340531.3417438},
+booktitle = {Proceedings of the 29th ACM International Conference on Information &amp; Knowledge Management},
+pages = {3481–3484}
+}
+```
+
 ## Updates
 * Version 1.1: :fire: **New Feature!** More information coming soon
 
