@@ -32,10 +32,10 @@ We have evaluated precision and recall of FiLiPo on several knowledge bases and 
 | dblp - Semantic Scholar (ArXiv-key)   | GBC    | 100            | 1.00              | 0.87           | 0.87     |
 | dblp - elsevier (DOI)                 | RegEx  | 100            | 0.94              | 0.77           | 0.85     |
 | dblp - elsevier (DOI)                 | GBC    | 100            | 0.93              | 0.74           | 0.82     |
-| Linked Movie DB - OMDB API            | RegEx  | 100            | 0.91              | 0.82           | 0.86     |
-| Linked Movie DB - OMDB API            | GBC    | 100            | 1.00              | 0.51           | 0.68     |
 | dblp - ArXiv (ArXiv-Key)              | RegEx  | 100            | 1.00              | 1.00           | 1.00     |
 | dblp - ArXiv (ArXiv-Key)              | GBC    | 100            | 0.83              | 1.00           | 0.91     |
+| Linked Movie DB - OMDB API            | RegEx  | 100            | 0.91              | 0.82           | 0.86     |
+| Linked Movie DB - OMDB API            | GBC    | 100            | 1.00              | 0.51           | 0.68     |
 
 ## Usable Similarity Methods
 We used the string similarity framework by Baltes et. al [[1](#references)]. The table below lists all string similarity methods that can be used. Note, that for `n` you can use the values `n=2,3,4,5`. 
@@ -128,13 +128,13 @@ This section of the `config.json` file is used to add rules (similar to an regul
 If you find FiLiPo useful in your research, please consider citing the following paper:
 ```bibtex
 @inproceedings{filipo,
-author = {Zeimetz, Tobias and Schenkel, Ralf},
-title = {Sample Driven Data Mapping for Linked Data and Web APIs},
-year = {2020},
-url = {https://doi.org/10.1145/3340531.3417438},
-doi = {10.1145/3340531.3417438},
-booktitle = {Proceedings of the 29th ACM International Conference on Information &amp; Knowledge Management},
-pages = {3481–3484}
+  author = {Zeimetz, Tobias and Schenkel, Ralf},
+  title = {Sample Driven Data Mapping for Linked Data and Web APIs},
+  year = {2020},
+  url = {https://doi.org/10.1145/3340531.3417438},
+  doi = {10.1145/3340531.3417438},
+  booktitle = {Proceedings of the 29th ACM International Conference on Information &amp; Knowledge Management},
+  pages = {3481–3484}
 }
 ```
 
