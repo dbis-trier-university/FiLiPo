@@ -3,6 +3,9 @@ FiLiPo is a system designed to simplify data integration. To do this, it determi
 
 ## Publications
 * Tobias Zeimetz, Ralf Schenkel<br/>
+  Preprint: [FiLiPo: A Sample Driven Approach for Finding Linkage Points between RDF Data and APIs](https://www.uni-trier.de/fileadmin/fb4/prof/INF/DBI/Publikationen/preprint_zeimetz_schenkel_eswc2021.pdf)<br/>
+  Submitted to ESWC 2021
+* Tobias Zeimetz, Ralf Schenkel<br/>
   [Sample Driven Data Mapping for Linked Data and Web APIs](https://www.uni-trier.de/fileadmin/fb4/prof/INF/DBI/Publikationen/submitted_cikm2020_zeimetz_schenkel.pdf)<br/>
   In CIKM Demo Track 2020
   * Demo Video: [Link](https://basilika.uni-trier.de/nextcloud/s/vN3Za1gpHmOAEuR)
