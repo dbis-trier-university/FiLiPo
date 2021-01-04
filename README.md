@@ -14,8 +14,9 @@ FiLiPo is a system designed to simplify data integration. To do this, it determi
 ## Aligned Datasets
 | Local Knowledge Base  | Aligned Web API                                                                                             |
 | --------------------------------- |-------------------------------------------------------------------------------------------------------------|
-| dblp[[2](#references)]            | CrossRef[[4](#references)], SciGraph[[5](#references)], Semantic Scholar (DOI)[[6](#references)], Semantic Scholar (ArXiv-Key)[[6](#references)], ArXiv[[7](#references)], Elsevier[[8](#references)] |
-| Linked Movie DB[[3](#references)] | Open Movie Database API[[9](#references)]                                                                                 |
+| dblp[[2](#references)]            | CrossRef[[4](#references)], SciGraph[[5](#references)], Semantic Scholar (DOI)[[6](#references)], Semantic Scholar (ArXiv-Key)[[6](#references)], Open Citations[[10](#references)]ArXiv[[7](#references)], Elsevier[[8](#references)] |
+| Linked Movie DB[[3](#references)] | Open Movie Database API[[9](#references)], The Movie Database[[11](#references)]  
+| IMDB[[12](#references)]           | Open Movie Database API[[9](#references)]|
 
 ## Usability
 We have evaluated precision and recall of FiLiPo on several knowledge bases and Web APIs. The average values for precision and recall were calculated by performing mutliple test series. The runtime of FiLiPo was between 15-45 Minutes, depending on the sample size and the response time of the Web API. For the evaluation we used the metrics precision, recall and F1 Score. FiLiPo was able to achieve a precision between 0.73 to 1.00 and a recall between 0.66 to 1.00. Values close to 1.0 were achieved mainly because there were only a few possible alignments. The corresponding F1 scores for FiLiPo are between 0.69 and 0.95.
@@ -126,7 +127,7 @@ If you find FiLiPo useful in your research, please consider citing the following
 * Version 1.1: Added a functionality to determine joint features. This feature is used to find out which commonalities entities had that led to a response from the API. For example, you can find out that an API only responds to articles from a specific publisher.
 
 ## References
-1. String-Similarity by Baltes et. al, [GitHub](https://github.com/sotorrent/string-similarity), [![DOI](https://zenodo.org/badge/98212408.svg)](https://zenodo.org/badge/latestdoi/98212408)
+1. String-Similarity by Baltes et. al, [GitHub](https://github.com/sotorrent/string-similarity)
 2. [dblp](https://dblp.uni-trier.de/)
 3. [Linked Movie DB](http://www.cs.toronto.edu/~oktie/linkedmdb/linkedmdb-18-05-2009-dump.nt)
 4. [CrossRef API](https://www.crossref.org/services/metadata-delivery/rest-api/)
@@ -135,3 +136,6 @@ If you find FiLiPo useful in your research, please consider citing the following
 7. [Arxiv API](https://arxiv.org/help/api)
 8. [Elsevier API](https://api.elsevier.com)
 9. [Open Movie Database API](http://www.omdbapi.com)
+10. [Open Citations](https://opencitations.net/index/coci/api/v1)
+11. [The Movie Database](https://developers.themoviedb.org/3/find/find-by-id)
+12. IMDB in RDF Format
