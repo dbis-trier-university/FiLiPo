@@ -4,8 +4,10 @@ import Utils.ReaderWriter.DiskReader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class SchemaLoader {
 
@@ -49,6 +51,19 @@ public class SchemaLoader {
         }
 
         return types;
+    }
+
+    // Method to load the predicates that are used as identifier in the local knowledge base. Clearly identifier should
+    // be compared by using equals() instead of some similarity methods like Jaro-Winkler
+    public static Set<String> loadIdentifierPredicates(String dbName) {
+        Set<String> identifierPredicates = new HashSet<>();
+
+        JSONArray array = SchemaLoader.getIdentifierPredicates(dbName);
+        for (int i = 0; i < array.length(); i++) {
+            identifierPredicates.add(array.getJSONObject(i).getString("predicate"));
+        }
+
+        return identifierPredicates;
     }
 
 }

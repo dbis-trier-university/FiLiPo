@@ -19,7 +19,7 @@ public class QueryProcessor {
             this.query = QueryFactory.create(queryStr);
             this.qexec = QueryExecutionFactory.sparqlService(url, this.query);
         } else {
-            boolean ttlFile = url.endsWith(".ttl");
+            boolean ttlFile = url.endsWith(".ttl") || url.endsWith(".nt") || url.endsWith(".n3");
 
             if(ttlFile){
                 this.model = ModelFactory.createDefaultModel();

@@ -116,4 +116,8 @@ public class TypeFilter extends FilterSinkRDF {
         return this.types;
     }
 
+    public void close(){
+        this.types = null;
+    }
+
 }

@@ -95,7 +95,6 @@ public class KnowledgeBaseManagement {
         return solutions;
     }
 
-
     public static Set<Pair<String,String>> getFullKnowledge(String dbName, String inputType, String entity, List<QuerySolution> localKnowledge){
         Set<Pair<String,String>> fullKnowledge = getKnowledge(dbName,localKnowledge,null);
         Set<String> inverseRelations = getInverseRelations(dbName, inputType);

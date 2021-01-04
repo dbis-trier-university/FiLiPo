@@ -62,10 +62,22 @@ public class SchemaExtractor {
         // The filter is used to replace entities by their types and group them together to a schema
         TripleAnalyzer tripleAnalyzer = new TripleAnalyzer(noWhere, this.name, typeFilter.getTypes(), logger);
         RDFParser.source(this.factPath).parse(tripleAnalyzer);
+        tripleAnalyzer.types = null;
+
+        // Count class occurrences
+        JSONArray classArray = new JSONArray();
+        Map<String,Integer> classOccurrences = countClasses(typeFilter.getTypes());
+        for(Map.Entry<String,Integer> entry : classOccurrences.entrySet()){
+            JSONObject tmp = new JSONObject();
+            tmp.put("class",entry.getKey());
+            tmp.put("occurrence", entry.getValue());
+            classArray.put(tmp);
+        }
+        typeFilter.close();
 
         // Build JSON array to store the structure of the knowledge base
         JSONArray array = new JSONArray();
-        for(Map.Entry entry : tripleAnalyzer.getReplacement().entrySet()){
+        for(Map.Entry entry : tripleAnalyzer.replacement.entrySet()){
             Triple t = ((Triple) entry.getKey());
 
             JSONObject tmp = new JSONObject();
@@ -79,32 +91,30 @@ public class SchemaExtractor {
 
             array.put(tmp);
         }
+        tripleAnalyzer.replacement = null;
 
         // Build JSON array to store possible identifier
+        JSONArray functionality = new JSONArray();
         JSONArray identifier = new JSONArray();
-        for(Map.Entry<String,Double> entry : tripleAnalyzer.getFunctionality().entrySet()){
+        for(Map.Entry<String,Double> entry : tripleAnalyzer.functionality.entrySet()){
+            JSONObject idObject = new JSONObject();
+            idObject.put("predicate",entry.getKey());
+            idObject.put("functionality",entry.getValue());
+
+            // In case of identifier relation
             if(entry.getValue() >= this.idThreshold) {
-                JSONObject idObject = new JSONObject();
-                idObject.put("predicate",entry.getKey());
-                idObject.put("functionality",entry.getValue());
                 idObject.put("type","none");
                 identifier.put(idObject);
             }
-        }
 
-        // Count class occurrences
-        JSONArray classArray = new JSONArray();
-        Map<String,Integer> classOccurrences = countClasses(typeFilter.getTypes());
-        for(Map.Entry<String,Integer> entry : classOccurrences.entrySet()){
-            JSONObject tmp = new JSONObject();
-            tmp.put("class",entry.getKey());
-            tmp.put("occurrence", entry.getValue());
-            classArray.put(tmp);
+            functionality.put(idObject);
         }
+        tripleAnalyzer.functionality = null;
 
         // Build final JSON object
         JSONObject json = new JSONObject();
         json.put("identifier",identifier);
+        json.put("functionality",functionality);
         json.put("classes",classArray);
         json.put("structure",array);
 

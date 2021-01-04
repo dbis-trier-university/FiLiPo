@@ -139,7 +139,8 @@ If you find FiLiPo useful in your research, please consider citing the following
 ```
 
 ## Updates
-* Version 1.1: :fire: **New Feature!** More information coming soon
+* Version 1.2: Minor bug fixes and added an output file that is used by an Angular GUI to represent the results in an easy understandable way. The corresponding GUI will be published with the next update.
+* Version 1.1: Added a functionality to determine joint features. This feature is used to find out which commonalities entities had that led to a response from the API. For example, you can find out that an API only responds to articles from a specific publisher.
 
 ## References
 1. String-Similarity by Baltes et. al, [GitHub](https://github.com/sotorrent/string-similarity), [![DOI](https://zenodo.org/badge/98212408.svg)](https://zenodo.org/badge/latestdoi/98212408)

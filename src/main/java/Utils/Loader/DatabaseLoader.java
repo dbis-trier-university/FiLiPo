@@ -1,6 +1,6 @@
 package Utils.Loader;
 
-import RecordLinkage.Metrics.SupportConfidenceProcessor;
+import AlignmentProcessor.Metrics.SupportConfidenceProcessor;
 import Utils.ReaderWriter.DiskReader;
 import org.json.JSONArray;
 import org.json.JSONObject;

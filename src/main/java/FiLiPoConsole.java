@@ -1,4 +1,4 @@
-import RecordLinkage.AlignmentProcessor;
+import AlignmentProcessor.AlignmentProcessor;
 import Utils.Loader.ConfigurationLoader;
 
 import java.util.Scanner;

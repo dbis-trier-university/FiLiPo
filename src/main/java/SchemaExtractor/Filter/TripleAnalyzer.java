@@ -11,10 +11,10 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 public class TripleAnalyzer extends FilterSinkRDF {
-    private Map<Triple,Integer> replacement;                        //Map<Triple,Counter> Triple only contain types
-    private Map<String, Set<String>> types;                         //Map<Entity,Type>
+    public Map<Triple,Integer> replacement;                        //Map<Triple,Counter> Triple only contain types
+    public Map<String, Set<String>> types;                         //Map<Entity,Type>
     private Map<String, Map<String,Integer>> functionalityHelper;   //Map<Predicate, Map<Object,Counter>>
-    private Map<String, Double> functionality;
+    public Map<String, Double> functionality;
     private String name;
     private long time;
     private Logger logger;
@@ -29,10 +29,6 @@ public class TripleAnalyzer extends FilterSinkRDF {
         this.logger = logger;
     }
 
-    public Map<String, Double> getFunctionality() {
-        return functionality;
-    }
-
     private void calcFunctionality() {
         this.functionality = new HashMap<>();
 
@@ -44,6 +40,8 @@ public class TripleAnalyzer extends FilterSinkRDF {
             }
             this.functionality.put(predicateEntry.getKey(),predicateEntry.getValue().size()/occurences);
         }
+
+        System.out.println("Test");
     }
 
     @Override
@@ -145,9 +143,5 @@ public class TripleAnalyzer extends FilterSinkRDF {
         } else {
             this.replacement.put(t,1);
         }
-    }
-
-    public Map<Triple,Integer> getReplacement() {
-        return this.replacement;
     }
 }
