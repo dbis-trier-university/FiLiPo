@@ -6,7 +6,7 @@
     "secretpath": "secrets.json",
     "ipc": "tcp://*:5555",
     "memory":"256",
-    "timeout": "500",
+    "timeout": "1000",
     "mode": "0",
     "loglevel": "0"
   },
@@ -14,19 +14,21 @@
     "similarity_requests": "100",
 
     "candidate_requests": "25",
-    "string_similarity": "0.7",
-    "record_similarity": "0.2",
+    "string_similarity": "0.5",
+    "record_similarity": "0.1",
 
-    "distribution_variance": "0.4",
+    "distribution_variance": "0.3",
+
     "candidate_responses": "0.1",
-    "error_threshold": "0.65",
+    "error_threshold": "0.7",
+
     "traversal_depth": "2",
     "functionality_threshold": "0.996",
-    "classifier": "regex",
+    "classifier": "gbc",
 
     "support_mode": "0",
-    "min_support": "0.5",
-    "min_confidence": "0.6",
+    "min_support": "0.4",
+    "min_confidence": "0.1",
 
     "similarity_metrics": [
       "Equal",

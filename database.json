@@ -9,15 +9,70 @@
       "label": "moviedb",
       "source": "D:/Databases/linked_mdb/fixed_linkedmdb.nt",
       "url": "D:/Databases/linked_mdb/tdb"
+    },
+    {
+      "label": "moviedb2",
+      "source": "D:/Databases/linked_mdb_imdb/linkedmdb_imdb.nt",
+      "url": "D:/Databases/linked_mdb_imdb/tdb"
+    },
+    {
+      "label": "imdb",
+      "source": "C:/Databases/imdb/imdb_full5.ttl",
+      "url": "C:/Databases/imdb/backup"
+    },
+    {
+      "label": "imdb_ids",
+      "source": "C:/Databases/imdb/imdb_full5.ttl",
+      "url": "C:/Databases/imdb/tdb"
+    },
+    {
+      "label": "yago-lite",
+      "source": "D:/Databases/yagolite/",
+      "url": "D:/Databases/yago-lite/fixed/tdb"
     }
   ],
   "apis": [
     {
+      "selection": [
+        {
+          "confidence": 0.7142857142857143,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#publishedIn, Lecture Notes in Computer Science",
+          "support": 0.4827586206896552
+        },
+        {
+          "confidence": 0.90625,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#publishedBy, Springer",
+          "support": 0.5517241379310345
+        },
+        {
+          "confidence": 0.10714285714285714,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#publishedIn, Advances in Intelligent Systems and Computing",
+          "support": 0.4827586206896552
+        },
+        {
+          "confidence": 0.11538461538461539,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournal, Scientometrics",
+          "support": 0.4482758620689655
+        },
+        {
+          "confidence": 0.7142857142857143,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#publishedInSeries, Lecture Notes in Computer Science",
+          "support": 0.4827586206896552
+        },
+        {
+          "confidence": 0.10714285714285714,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#publishedInSeries, Advances in Intelligent Systems and Computing",
+          "support": 0.4827586206896552
+        }
+      ],
       "name": "Springer SciGraph",
       "format": "json",
       "label": "scigraphDOI",
       "parameters": [
         {
+          "filter": [
+            "http://www.wikidata.org/prop/direct/P356"
+          ],
           "name": "q",
           "type": "https://dblp.org/rdf/schema-2020-07-01#Publication",
           "status": "required"
@@ -26,24 +81,200 @@
       "url": "http://api.springernature.com/metadata/{format}?q=doi:{q}&api_key={key}"
     },
     {
+      "name": "Springer SciGraph",
+      "format": "json",
+      "label": "scigraph",
+      "parameters": [
+        {
+          "filter": [
+            "https://dblp.org/rdf/schema-2020-07-01#title"
+          ],
+          "name": "q",
+          "type": "https://dblp.org/rdf/schema-2020-07-01#Publication",
+          "status": "required"
+        }
+      ],
+      "url": "http://api.springernature.com/metadata/{format}?q={q}&api_key={key}"
+    },
+    {
+      "selection": [
+        {
+          "confidence": 0.11320754716981132,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#yearOfPublication, 2013",
+          "support": 0.53
+        },
+        {
+          "confidence": 1,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, https://dblp.org/rdf/schema-2020-07-01#Creator",
+          "support": 0.99
+        },
+        {
+          "confidence": 0.23076923076923078,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#publishedBy, Springer",
+          "support": 0.52
+        },
+        {
+          "confidence": 1,
+          "type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type, https://dblp.org/rdf/schema-2020-07-01#Publication",
+          "support": 1
+        },
+        {
+          "confidence": 1,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, https://dblp.org/rdf/schema-2020-07-01#Publication",
+          "support": 0.53
+        },
+        {
+          "confidence": 0.1320754716981132,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#numberOfCreators, 3^^http://www.w3.org/2001/XMLSchema#integer",
+          "support": 0.53
+        },
+        {
+          "confidence": 1,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, https://dblp.org/rdf/schema-2020-07-01#Editorship",
+          "support": 0.53
+        },
+        {
+          "confidence": 1,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, https://dblp.org/rdf/schema-2020-07-01#Person",
+          "support": 0.99
+        },
+        {
+          "confidence": 0.46,
+          "type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type, https://dblp.org/rdf/schema-2020-07-01#Article",
+          "support": 1
+        },
+        {
+          "confidence": 0.5094339622641509,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#numberOfCreators, 0^^http://www.w3.org/2001/XMLSchema#integer",
+          "support": 0.53
+        },
+        {
+          "confidence": 0.26,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#numberOfCreators, 2^^http://www.w3.org/2001/XMLSchema#integer",
+          "support": 1
+        },
+        {
+          "confidence": 0.9622641509433962,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#bibtexType, http://purl.org/net/nknouf/ns/bibtex#Proceedings",
+          "support": 0.53
+        },
+        {
+          "confidence": 0.21153846153846154,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#publishedBy, IEEE Computer Society",
+          "support": 0.52
+        },
+        {
+          "confidence": 1,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, https://dblp.org/rdf/schema-2020-07-01#Creator",
+          "support": 0.99
+        },
+        {
+          "confidence": 0.1,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#yearOfPublication, 2014",
+          "support": 1
+        },
+        {
+          "confidence": 0.11,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#yearOfPublication, 2017",
+          "support": 1
+        },
+        {
+          "confidence": 0.15384615384615385,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#publishedBy, ACM",
+          "support": 0.52
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournalVolumeIssue, 4",
+          "support": 0.42
+        },
+        {
+          "confidence": 0.19047619047619047,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournalVolumeIssue, 6",
+          "support": 0.42
+        },
+        {
+          "confidence": 0.15,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#numberOfCreators, 4^^http://www.w3.org/2001/XMLSchema#integer",
+          "support": 1
+        },
+        {
+          "confidence": 0.51,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#bibtexType, http://purl.org/net/nknouf/ns/bibtex#Inproceedings",
+          "support": 1
+        },
+        {
+          "confidence": 0.1509433962264151,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#numberOfCreators, 2^^http://www.w3.org/2001/XMLSchema#integer",
+          "support": 0.53
+        },
+        {
+          "confidence": 0.3269230769230769,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#publishedBy, IEEE",
+          "support": 0.52
+        },
+        {
+          "confidence": 0.32,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#numberOfCreators, 3^^http://www.w3.org/2001/XMLSchema#integer",
+          "support": 1
+        },
+        {
+          "confidence": 0.46,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#bibtexType, http://purl.org/net/nknouf/ns/bibtex#Article",
+          "support": 1
+        },
+        {
+          "confidence": 0.13,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#numberOfCreators, 1^^http://www.w3.org/2001/XMLSchema#integer",
+          "support": 1
+        },
+        {
+          "confidence": 1,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, https://dblp.org/rdf/schema-2020-07-01#Person",
+          "support": 0.99
+        },
+        {
+          "confidence": 0.51,
+          "type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type, https://dblp.org/rdf/schema-2020-07-01#Inproceedings",
+          "support": 1
+        }
+      ],
       "name": "CrossRef DOI API",
       "format": "json",
       "label": "crossrefDOI",
       "parameters": [
         {
+          "filter": [
+            "http://www.wikidata.org/prop/direct/P356"
+          ],
           "name": "doi",
           "type": "https://dblp.org/rdf/schema-2020-07-01#Publication",
           "status": "required"
         }
       ],
-      "url": "https://api.crossref.org/works/{doi}"
+      "url": "https://api.crossref.org/works/{doi}?mailto=zeimetz@uni-trier.de"
     },
     {
+      "selection": [
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedAsPartOf, https://dblp.org/rdf/schema-2020-07-01#yearOfPublication, 2013",
+          "support": 0.6363636363636364
+        },
+        {
+          "confidence": 0.13636363636363635,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#yearOfPublication, 2013",
+          "support": 1
+        }
+      ],
       "name": "Semantic Scholar",
       "format": "json",
       "label": "s2",
       "parameters": [
         {
+          "filter": [
+            "http://www.wikidata.org/prop/direct/P356"
+          ],
           "name": "q",
           "type": "https://dblp.org/rdf/schema-2020-07-01#Publication",
           "status": "required"
@@ -57,6 +288,9 @@
       "label": "s2arxiv",
       "parameters": [
         {
+          "filter": [
+            "http://www.wikidata.org/prop/direct/P818"
+          ],
           "name": "q",
           "type": "https://dblp.org/rdf/schema-2020-07-01#Publication",
           "status": "required"
@@ -65,11 +299,76 @@
       "url": "https://api.semanticscholar.org/v1/paper/arXiv:{q}"
     },
     {
-      "name": "arXiv",
+      "selection": [
+        {
+          "confidence": 0.98989898989899,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedIn, CoRR",
+          "support": 1
+        },
+        {
+          "confidence": 0.10101010101010101,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#numberOfCreators, 5^^http://www.w3.org/2001/XMLSchema#integer",
+          "support": 1
+        },
+        {
+          "confidence": 1,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournal, CoRR",
+          "support": 0.98989898989899
+        },
+        {
+          "confidence": 0.20202020202020202,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#yearOfPublication, 2019",
+          "support": 1
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#yearOfPublication, 2017",
+          "support": 1
+        },
+        {
+          "confidence": 0.16161616161616163,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#yearOfPublication, 2018",
+          "support": 1
+        },
+        {
+          "confidence": 0.1414141414141414,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#numberOfCreators, 4^^http://www.w3.org/2001/XMLSchema#integer",
+          "support": 1
+        },
+        {
+          "confidence": 0.26262626262626265,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#numberOfCreators, 3^^http://www.w3.org/2001/XMLSchema#integer",
+          "support": 1
+        },
+        {
+          "confidence": 0.98989898989899,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#bibtexType, http://purl.org/net/nknouf/ns/bibtex#Article",
+          "support": 1
+        },
+        {
+          "confidence": 0.1717171717171717,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#numberOfCreators, 1^^http://www.w3.org/2001/XMLSchema#integer",
+          "support": 1
+        },
+        {
+          "confidence": 0.1414141414141414,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#yearOfPublication, 2020",
+          "support": 1
+        },
+        {
+          "confidence": 0.98989898989899,
+          "type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type, https://dblp.org/rdf/schema-2020-07-01#Informal",
+          "support": 1
+        }
+      ],
+      "name": "ArXiv (usind DOIs)",
       "format": "json",
-      "label": "arxiv",
+      "label": "arxivDOI",
       "parameters": [
         {
+          "filter": [
+            "http://www.wikidata.org/prop/direct/P818"
+          ],
           "name": "doi",
           "type": "https://dblp.org/rdf/schema-2020-07-01#Publication",
           "status": "required"
@@ -78,11 +377,1027 @@
       "url": "http://export.arxiv.org/api/query?search_query=id:{doi}"
     },
     {
+      "name": "ArXiv",
+      "format": "json",
+      "label": "arxiv",
+      "parameters": [
+        {
+          "filter": [
+            "https://dblp.org/rdf/schema-2020-07-01#title"
+          ],
+          "name": "input",
+          "type": "https://dblp.org/rdf/schema-2020-07-01#Publication",
+          "status": "required"
+        }
+      ],
+      "url": "http://export.arxiv.org/api/query?search_query={input}"
+    },
+    {
+      "selection": [
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P1687, Q55473710",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q55473710",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#webpage, https://scholar.google.com/citations?user=FOi2cEYAAAAJ",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-8769-302X",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournal, Comput. Networks",
+          "support": 1
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P1687, Q29387266",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0002-7304-6849",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0001-8769-302X",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0003-3909-4916",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www.dehmer.org/",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www.cysol.co.jp/",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedIn, Inf. Sci.",
+          "support": 1
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www2.port.ac.uk/school-of-creative-technologies/staff/hui-yu.html",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0002-7304-6849",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0002-4249-2264",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q29387266",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#webpage, https://www.linkedin.com/in/mhsaar",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0002-4249-2264",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#webpage, https://zbmath.org/authors/?q=ai:shi.yongtang",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0002-4249-2264",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0003-3909-4916",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www.cysol.co.jp/",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0003-3909-4916",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q100469",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#webpage, https://scholar.google.com/citations?user=FOi2cEYAAAAJ",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0002-4249-2264",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q55453192",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q85702982",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#webpage, https://zbmath.org/authors/?q=ai:shi.yongtang",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q87038781",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0001-7315-7322",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q59709935",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0002-7304-6849",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournal, Inf. Sci.",
+          "support": 1
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0001-8769-302X",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://researchportal.port.ac.uk/portal/en/persons/hui-yu(4967c525-206f-4187-8092-4c918afe46b8).html",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0003-1780-2467",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://home.ie.cuhk.edu.hk/~yjzhang/",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q55473710",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P1687, Q55453192",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0003-1780-2467",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0001-5008-2460",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://mla.sdu.edu.cn/ylyin.html",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-9600-779X",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0002-7655-9228",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0002-7304-6849",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q100469",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www.psychology.unimaas.nl/Base/Medewerkerspersonal/Rainer_goebel_extended.htm",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www.it.is.tohoku.ac.jp/~kato/en-index.html",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0003-1780-2467",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0002-1987-9268",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q85702982",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q55453192",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q87038781",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0002-3645-435X",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0003-3909-4916",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q59995759",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q59709935",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0001-9600-779X",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#webpage, https://scholar.google.com/citations?user=LfLfZXEAAAAJ",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q59995759",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q59824528",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#webpage, https://scholar.google.com/citations?user=GfxDvHkAAAAJ",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#webpage, https://en.wikipedia.org/wiki/Nei_Kato",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P1687, Q55473710",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0002-7655-9228",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0002-7304-6849",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P1687, Q29387266",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0001-7012-2087",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0002-1987-9268",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P1687, Q100469",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://home.ie.cuhk.edu.hk/~yjzhang/",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0002-4249-2264",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P1687, Q87038781",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0001-5008-2460",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0002-3645-435X",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-8769-302X",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P1687, Q29452931",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q59824528",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0001-9406-7967",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0001-7315-7322",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0002-3645-435X",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#webpage, https://en.wikipedia.org/wiki/Dan_Halperin",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-7012-2087",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#webpage, https://scholar.google.com/citations?user=mbo1boUAAAAJ",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P1687, Q59824528",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-9406-7967",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://systemsmedicine.de/Team/Vargas.html",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0002-1987-9268",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P1687, Q59709935",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q59709935",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0003-3909-4916",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P1687, Q59995759",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q29452931",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#webpage, https://scholar.google.com/citations?user=WTnN8C0AAAAJ",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://d-nb.info/gnd/115159983",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0001-9600-779X",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P1687, Q85702982",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P1687, Q55453192",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www.dehmer.org/",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0002-1987-9268",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#webpage, https://scholar.google.com/citations?user=LfLfZXEAAAAJ",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q100469",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0002-1987-9268",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#webpage, https://scholar.google.com/citations?user=GfxDvHkAAAAJ",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q100469",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q85702982",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#webpage, https://scholar.google.com/citations?user=WTnN8C0AAAAJ",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0001-9406-7967",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www.math.tau.ac.il/~danha/",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0001-8769-302X",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q55453192",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www.psychology.unimaas.nl/Base/Medewerkerspersonal/Rainer_goebel_extended.htm",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0002-7655-9228",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q59995759",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryAffiliation, Chinese University of Hong Kong",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0002-7655-9228",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#webpage, https://www.researcherid.com/rid/H-1591-2017",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0001-5008-2460",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#webpage, https://www.linkedin.com/in/mhsaar",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0002-7655-9228",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#webpage, https://en.wikipedia.org/wiki/Nei_Kato",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-5008-2460",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0001-9600-779X",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P1687, Q29452931",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q59995759",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0001-7012-2087",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournalVolumeIssue, 2",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.2222222222222222,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournalVolumeIssue, 3",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.2222222222222222,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournalVolumeIssue, 4",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournalVolumeIssue, 5",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q59709935",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0001-7315-7322",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-9406-7967",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://mla.sdu.edu.cn/ylyin.html",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://systemsmedicine.de/Team/Vargas.html",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q55453192",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#webpage, https://scholar.google.com/citations?user=mbo1boUAAAAJ",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0001-9406-7967",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q55473710",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0001-7012-2087",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://researchportal.port.ac.uk/portal/en/persons/hui-yu(4967c525-206f-4187-8092-4c918afe46b8).html",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-7012-2087",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q85702982",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0002-3645-435X",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q59824528",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://sites.google.com/site/chenlin198662/",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0002-7655-9228",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P1687, Q59995759",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www2.port.ac.uk/school-of-creative-technologies/staff/hui-yu.html",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournalVolumeIssue, 18",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournalVolumeIssue, 23",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0002-1987-9268",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0002-7304-6849",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P1687, Q59709935",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0003-1780-2467",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q29387266",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0003-1780-2467",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#webpage, https://www.researcherid.com/rid/H-1591-2017",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://d-nb.info/gnd/115159983",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q87038781",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www.it.is.tohoku.ac.jp/~kato/en-index.html",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-7315-7322",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0003-3909-4916",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0001-8769-302X",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://d-nb.info/gnd/115159983",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0001-7315-7322",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q55473710",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q59824528",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q29452931",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P1687, Q85702982",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#webpage, https://www.scopus.com/authid/detail.uri?authorId=56115992300",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0002-4249-2264",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P1687, Q59824528",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q87038781",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P1687, Q100469",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q29387266",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#webpage, https://www.scopus.com/authid/detail.uri?authorId=56115992300",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.w3.org/2002/07/owl#sameAs, https://d-nb.info/gnd/115159983",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0002-3645-435X",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.16666666666666666,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P1687, Q87038781",
+          "support": 0.42857142857142855
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-9600-779X",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryAffiliation, Chinese University of Hong Kong",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0001-5008-2460",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q29452931",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-7315-7322",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://www.wikidata.org/entity/Q29452931",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.w3.org/2002/07/owl#sameAs, https://orcid.org/0000-0001-5008-2460",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://www.wikidata.org/entity/Q29387266",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#otherHomepage, https://orcid.org/0000-0003-1780-2467",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, http://www.wikidata.org/prop/direct/P496, 0000-0001-9600-779X",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, http://www.math.tau.ac.il/~danha/",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#webpage, https://en.wikipedia.org/wiki/Dan_Halperin",
+          "support": 0.5
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0002-3645-435X",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.14285714285714285,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedIn, Comput. Networks",
+          "support": 1
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#authoredBy, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://orcid.org/0000-0001-7012-2087",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.125,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, http://www.wikidata.org/prop/direct/P496, 0000-0001-9406-7967",
+          "support": 0.5714285714285714
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#publishedInJournalVolumeIssue, 2-3",
+          "support": 0.6428571428571429
+        },
+        {
+          "confidence": 0.1111111111111111,
+          "type": "https://dblp.org/rdf/schema-2020-07-01#orderedCreators, https://dblp.org/rdf/schema-2020-07-01#primaryHomepage, https://sites.google.com/site/chenlin198662/",
+          "support": 0.6428571428571429
+        }
+      ],
       "name": "Elsevier",
       "format": "json",
       "label": "elsevierDOI",
       "parameters": [
         {
+          "filter": [
+            "http://www.wikidata.org/prop/direct/P356"
+          ],
           "name": "doi",
           "type": "https://dblp.org/rdf/schema-2020-07-01#Publication",
           "status": "required"
@@ -96,6 +1411,9 @@
       "label": "openDOI",
       "parameters": [
         {
+          "filter": [
+            "http://www.wikidata.org/prop/direct/P356"
+          ],
           "name": "doi",
           "type": "https://dblp.org/rdf/schema-2020-07-01#Publication",
           "status": "required"
@@ -104,9 +1422,96 @@
       "url": "https://w3id.org/oc/index/coci/api/v1/metadata/{doi}"
     },
     {
-      "name": "omdb",
+      "selection": [
+        {
+          "confidence": 1,
+          "type": "http://data.linkedmdb.org/resource/movie/producer, http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://data.linkedmdb.org/resource/movie/producer",
+          "support": 0.43333333333333335
+        }
+      ],
+      "name": "Open Movie Database",
       "format": "json",
-      "label": "omdb",
+      "label": "omdb4lmdb",
+      "parameters": [
+        {
+          "filter": [
+            "http://purl.org/dc/terms/title"
+          ],
+          "name": "id",
+          "type": "http://data.linkedmdb.org/resource/movie/film",
+          "status": "required"
+        }
+      ],
+      "url": "http://www.omdbapi.com/?t={id}&apikey={key}"
+    },
+    {
+      "name": "Open Movie Database",
+      "format": "json",
+      "label": "omdb4imdb",
+      "parameters": [
+        {
+          "filter": [
+            "https://clix.uni-trier.de/IMDB/ontology#hasTitle"
+          ],
+          "name": "id",
+          "type": "https://clix.uni-trier.de/IMDB/ontology#Movie",
+          "status": "required"
+        }
+      ],
+      "url": "http://www.omdbapi.com/?t={id}&apikey={key}"
+    },
+    {
+      "name": "The Movie Database - Find Movie",
+      "format": "json",
+      "label": "tmdbFindMovie",
+      "parameters": [
+        {
+          "filter": [
+            "http://data.linkedmdb.org/resource/movie/imdbid"
+          ],
+          "name": "id",
+          "type": "http://data.linkedmdb.org/resource/movie/film",
+          "status": "required"
+        }
+      ],
+      "url": "https://api.themoviedb.org/3/find/{id}?api_key={key}&language=en-US&external_source=imdb_id"
+    },
+    {
+      "name": "The Movie Database - Find Movie",
+      "format": "json",
+      "label": "tmdb4imdb",
+      "parameters": [
+        {
+          "filter": [
+            "https://clix.uni-trier.de/IMDB/ontology#hasImdbId"
+          ],
+          "name": "id",
+          "type": "https://clix.uni-trier.de/IMDB/ontology#Movie",
+          "status": "required"
+        }
+      ],
+      "url": "https://api.themoviedb.org/3/find/{id}?api_key={key}&language=en-US&external_source=imdb_id"
+    },
+    {
+      "name": "The Movie Database - Get Movie Details",
+      "format": "json",
+      "label": "tmdbGetDetails",
+      "parameters": [
+        {
+          "filter": [
+            "http://data.linkedmdb.org/resource/movie/imdbid"
+          ],
+          "name": "id",
+          "type": "http://data.linkedmdb.org/resource/movie/film",
+          "status": "required"
+        }
+      ],
+      "url": "https://api.themoviedb.org/3/movie/{id}?api_key={key}"
+    },
+    {
+      "name": "The Movie Database - Get Release Dates",
+      "format": "json",
+      "label": "tmdbReleaseDates",
       "parameters": [
         {
           "name": "id",
@@ -114,7 +1519,7 @@
           "status": "required"
         }
       ],
-      "url": "http://www.omdbapi.com/?t={id}&apikey={key}"
+      "url": "https://api.themoviedb.org/3/movie/{id}/release_dates?api_key={key}"
     }
   ]
 }
