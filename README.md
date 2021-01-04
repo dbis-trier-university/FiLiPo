@@ -18,24 +18,7 @@ FiLiPo is a system designed to simplify data integration. To do this, it determi
 | Linked Movie DB[[3](#references)] | Open Movie Database API[[9](#references)]                                                                                 |
 
 ## Usability
-We have evaluated precision and recall of FiLiPo on several knowledge bases and Web APIs. The average values for precision and recall were calculated by performing mutliple test series. The runtime of FiLiPo was between 15-45 Minutes, depending on the sample size and the response time of the Web API.
-
-| Aligning (RegExer)                    | Method | Sample<br>Size | Mean<br>Precision | Mean<br>Recall | F1 Score |
-| --------------------------------------|--------|----------------|-------------------|----------------|----------|
-| dblp - CrossRef (DOI)                 | RegEx  | 100            | 0.94              | 0.80           | 0.86     |
-| dblp - CrossRef (DOI)                 | GBC    | 100            | 0.92              | 0.79           | 0.85     |
-| dblp - SciGraph (DOI)                 | RegEx  | 100            | 1.00              | 0.88           | 0.93     |
-| dblp - SciGraph (DOI)                 | GBC    | 100            | 1.00              | 0.88           | 0.93     |
-| dblp - Semantic Scholar (DOI)         | RegEx  | 100            | 0.98              | 0.91           | 0.94     |
-| dblp - Semantic Scholar (DOI)         | GBC    | 100            | 0.98              | 0.84           | 0.91     |
-| dblp - Semantic Scholar (ArXiv-Key)   | RegEx  | 100            | 1.00              | 0.85           | 0.85     |
-| dblp - Semantic Scholar (ArXiv-key)   | GBC    | 100            | 1.00              | 0.87           | 0.87     |
-| dblp - elsevier (DOI)                 | RegEx  | 100            | 0.94              | 0.77           | 0.85     |
-| dblp - elsevier (DOI)                 | GBC    | 100            | 0.93              | 0.74           | 0.82     |
-| dblp - ArXiv (ArXiv-Key)              | RegEx  | 100            | 1.00              | 1.00           | 1.00     |
-| dblp - ArXiv (ArXiv-Key)              | GBC    | 100            | 0.83              | 1.00           | 0.91     |
-| Linked Movie DB - OMDB API            | RegEx  | 100            | 0.91              | 0.82           | 0.86     |
-| Linked Movie DB - OMDB API            | GBC    | 100            | 1.00              | 0.51           | 0.68     |
+We have evaluated precision and recall of FiLiPo on several knowledge bases and Web APIs. The average values for precision and recall were calculated by performing mutliple test series. The runtime of FiLiPo was between 15-45 Minutes, depending on the sample size and the response time of the Web API. For the evaluation we used the metrics precision, recall and F1 Score. FiLiPo was able to achieve a precision between 0.73 to 1.00 and a recall between 0.66 to 1.00. Values close to 1.0 were achieved mainly because there were only a few possible alignments. The corresponding F1 scores for FiLiPo are between 0.69 and 0.95.
 
 ## Usable Similarity Methods
 We used the string similarity framework by Baltes et. al [[1](#references)]. The table below lists all string similarity methods that can be used. Note, that for `n` you can use the values `n=2,3,4,5`. 
