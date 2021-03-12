@@ -6,21 +6,20 @@
     "secretpath": "secrets.json",
     "ipc": "tcp://*:5555",
     "memory":"256",
-    "timeout": "1000",
+    "timeout": "500",
     "mode": "0",
     "loglevel": "0"
   },
   "linkage_config": {
     "similarity_requests": "100",
-
     "candidate_requests": "25",
+
     "string_similarity": "0.5",
     "record_similarity": "0.1",
 
-    "distribution_variance": "0.3",
-
-    "candidate_responses": "0.1",
-    "error_threshold": "0.7",
+    "distribution_variance": "0.0",
+    "candidate_responses": "0.2",
+    "error_threshold": "0.5",
 
     "traversal_depth": "2",
     "functionality_threshold": "0.996",

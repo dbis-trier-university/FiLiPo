@@ -1,6 +1,7 @@
 package AlignmentProcessor;
 
 import QueryManagement.KnowledgeBaseManagement;
+import QueryManagement.QueryProcessor;
 import SchemaExtractor.SchemaExtractor;
 import Similarity.Classifier.GbClassifier;
 import Similarity.Classifier.RegExer;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.util.Pair;
 import me.tongfei.progressbar.ProgressBar;
 import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSetFormatter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -89,10 +91,15 @@ public class AlignmentProcessor {
         // And dont find error responses if the user itself configured the input
         if (this.numberOfEntitiesMap.size() > 1 && this.candidateMap.size() > 1) {
             removeErrorResponses();
+            removeListAnswers();
         }
 
+        System.out.println("[detectLinkagePoints]: Input Relations: ");
+        for(Map.Entry<String,Integer> entry : this.candidateMap.entrySet())
+            System.out.println("\t -" + entry.getKey() + ": " + entry.getValue());
+
         doAligningPhase(this.matchingRecords, this.nonMatchingRecords);
-        System.out.println("Test: " + failCounter + " - " +  this.nonMatchingRecords.size() + " - " + this.matchingRecords.size());
+        System.out.println("Statistics: " + failCounter + " - " +  this.nonMatchingRecords.size() + " - " + this.matchingRecords.size());
         System.out.println("[detectLinkagePoints]: Valid Responses: " + this.matchingRecords.size());
 
         System.out.println("[detectLinkagePoints]: Determine Alignment..");
@@ -168,10 +175,13 @@ public class AlignmentProcessor {
                         Map<String, LinkedList<String[]>> relationMetrics = calculatePotentialLinkagePoints(valueList.get(i).getKey(), apiResponse, fullKnowledge);
 
                         // Calculate overall record similarity, if high enough add to list of meaningful results
-                        boolean enoughOverlapping = (apiResponse.size() > localKnowledge.size()
-                                && relationMetrics.size() > (localKnowledge.size() * recordSimThreshold))
-                                || (localKnowledge.size() > apiResponse.size() &&
-                                relationMetrics.size() > (apiResponse.size() * recordSimThreshold));
+                        boolean enoughOverlapping = false;
+                        if(relationMetrics != null){
+                            enoughOverlapping = (apiResponse.size() > localKnowledge.size()
+                                    && relationMetrics.size() > (localKnowledge.size() * recordSimThreshold))
+                                    || (localKnowledge.size() > apiResponse.size() &&
+                                    relationMetrics.size() > (apiResponse.size() * recordSimThreshold));
+                        }
 
                         if (enoughOverlapping) {
                             if (links.containsKey(candidate.getKey())) {
@@ -249,12 +259,13 @@ public class AlignmentProcessor {
         try (ProgressBar pb = new ProgressBar("Remove Error Responses", 2)) {
             if (ConfigurationLoader.getLogLevel() >= 2)
                 System.out.println("[removeErrorResponses] Determine error response..");
+
             Map<String, Integer> counterMap = new HashMap<>();
             for (int i = 0; i < responseList.size(); i = i + 8) {
                 int counter = 0;
 
                 for (int j = 0; j < responseList.size(); j = j + 8) {
-                    // Use Levenshtein to compare JSON responses
+                    // Use Similarity Metric to find error response
                     if (i != j && org.sotorrent.stringsimilarity.edit.Variants.levenshtein(responseList.get(i).getContent(), responseList.get(j).getContent()) > threshold) {
                         counter++;
                     }
@@ -267,7 +278,8 @@ public class AlignmentProcessor {
             // Find potential error response
             try {
                 Map.Entry<String, Integer> errorResponse = Collections.max(counterMap.entrySet(), Comparator.comparing(Map.Entry::getValue));
-                if (errorResponse.getValue() >= this.candidateRequests * 0.3) {
+
+                if (errorResponse.getValue() >= this.candidateRequests * ConfigurationLoader.getCandidateResponses()) {
                     if (ConfigurationLoader.getLogLevel() >= 1)
                         System.out.println("Error Response: " + errorResponse.getKey());
 
@@ -288,13 +300,96 @@ public class AlignmentProcessor {
                     }
 
                     candidateResponseMap.entrySet().removeIf(entry -> !newCandidateResponseMap.containsKey(entry.getKey()));
-                    candidateMap.entrySet().removeIf(entry -> !newCandidateResponseMap.containsKey(entry.getKey()) || newCandidateResponseMap.get(entry.getKey()).size() <= candidateRequests * 0.1);
+                    candidateMap.entrySet().removeIf(entry -> !newCandidateResponseMap.containsKey(entry.getKey()) || newCandidateResponseMap.get(entry.getKey()).size() <= candidateRequests * ConfigurationLoader.getCandidateResponses());
                 }
             } catch (Exception ignored) {
             }
 
             pb.step();
         }
+    }
+
+    private void removeListAnswers(){
+        Pair<String,Integer> prefixPair = determineCommonPrefix();
+
+        if(prefixPair.getKey().endsWith("[")){
+            candidateResponseMap.entrySet().forEach(tmp -> {
+                tmp.getValue().removeIf( resp -> {
+                    HashMap<String, Object> map = ResponseConverter.convertResponse(resp);
+
+                    int indexValue = -1;
+                    for(Map.Entry<String, Object> path : map.entrySet()){
+                        if(path.getKey().startsWith(prefixPair.getKey())){
+                            String indexString = path.getKey().substring(prefixPair.getKey().length(),prefixPair.getKey().length()+1);
+
+                            if(Utils.isNumeric(indexString)){
+                                if(indexValue == -1) indexValue = Integer.parseInt(indexString);
+                                else if (indexValue != Integer.parseInt(indexString)) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+
+                    return false;
+                });
+            });
+        }
+
+        candidateMap.entrySet().removeIf(entry -> candidateResponseMap.get(entry.getKey()).size() <= this.candidateRequests * ConfigurationLoader.getCandidateResponses());
+    }
+
+    private Pair<String,Integer> determineCommonPrefix(){
+        HashMap<String,Integer> finalCountMap = new HashMap<>();
+
+        for (Map.Entry<String, List<HttpResponse>> tmp : candidateResponseMap.entrySet()) {
+            for(HttpResponse resp : tmp.getValue()){
+                HashMap<String, Object> map = ResponseConverter.convertResponse(resp);
+
+                if(map != null){
+                    Map<String,Integer> countMap = new HashMap<>();
+                    for(Map.Entry<String, Object> path1 : map.entrySet()){
+                        for(Map.Entry<String, Object> path2 : map.entrySet()){
+                            int end = Utils.getLongestSubsequenceLength(path1.getKey(),path2.getKey());
+                            if(end != path1.getKey().length()) {
+                                String str = path1.getKey().substring(0,end);
+                                if(countMap.containsKey(str)){
+                                    countMap.put(str,countMap.get(str) + 1);
+                                } else {
+                                    countMap.put(str,1);
+                                }
+                            }
+                        }
+                    }
+
+                    String maxPrefix = "";
+                    int maxCount = -1;
+                    for(Map.Entry<String,Integer> entry : countMap.entrySet()){
+                        if(entry.getValue() > maxCount){
+                            maxPrefix = entry.getKey();
+                            maxCount = entry.getValue();
+                        }
+                    }
+
+                    if(finalCountMap.containsKey(maxPrefix)){
+                        finalCountMap.put(maxPrefix,finalCountMap.get(maxPrefix) + maxCount);
+                    } else {
+                        finalCountMap.put(maxPrefix,maxCount);
+                    }
+                }
+            }
+        }
+
+        String maxPrefix = "";
+        int maxCount = -1;
+        for(Map.Entry<String,Integer> entry : finalCountMap.entrySet()){
+            if(entry.getValue() > maxCount){
+                maxPrefix = entry.getKey();
+                maxCount = entry.getValue();
+            }
+        }
+
+        return new Pair<>(maxPrefix,maxCount);
     }
 
     private Map<String, Map<String, Map<String, Pair<String, Double>>>> determineLinkagePoints() {
@@ -706,109 +801,113 @@ public class AlignmentProcessor {
         Set<String> identifierPredicates = SchemaLoader.loadIdentifierPredicates(this.dbName);
         Map<String, LinkedList<String[]>> relationMetrics = new HashMap<>();
 
-        for (Map.Entry<String, Object> apiEntry : apiResponse.entrySet()) {
-            String apiRelation = apiEntry.getKey().trim();
+        if(apiResponse != null){
+            for (Map.Entry<String, Object> apiEntry : apiResponse.entrySet()) {
+                String apiRelation = apiEntry.getKey().trim();
 
-            // Values at API side can be empty and therefore result in a null pointer error*
-            String apiValue;
-            try {
-                apiValue = apiEntry.getValue().toString().trim();
+                // Values at API side can be empty and therefore result in a null pointer error*
+                String apiValue;
+                try {
+                    apiValue = apiEntry.getValue().toString().trim();
 
-                if (!apiValue.equals(preCondition)) {
-                    for (Pair<String, String> localEntry : fullKnowledge) {
-                        String dbValue = localEntry.getValue();
-                        if(dbValue.contains("^^")) dbValue = dbValue.substring(0,dbValue.indexOf("^^"));
-                        String dbRelation = localEntry.getKey();
-                        String[] relationArray = dbRelation.split(", "); // relation can be a path of multiple predicates (separated by comma)
+                    if (!apiValue.equals(preCondition)) {
+                        for (Pair<String, String> localEntry : fullKnowledge) {
+                            String dbValue = localEntry.getValue();
+                            if(dbValue.contains("^^")) dbValue = dbValue.substring(0,dbValue.indexOf("^^"));
+                            String dbRelation = localEntry.getKey();
+                            String[] relationArray = dbRelation.split(", "); // relation can be a path of multiple predicates (separated by comma)
 
-                        // Comparision of URLs and numbers needs to be different than compared to strings (e.g. title vs year)
-                        // URLs and numbers should therefore be equal and not similar (a year off by one is no match)
-                        Pair<String, Double> originalComputation;
-                        if ((!identifierPredicates.contains(relationArray[relationArray.length - 1]) && Utils.isNumeric(dbValue))
-                                || Utils.isNumeric(apiValue) || Utils.isUrl(dbValue) || Utils.isUrl(apiValue) || dbRelation.endsWith("sameAs")) {
-                            double similarity = StringSimilarityProcessor.computeSimilarity(dbValue, apiValue, "Equal");
-                            originalComputation = new Pair<>("Equal", similarity);
-                        } else {
-                            originalComputation = StringSimilarityProcessor.computeSimilarity(apiValue, dbValue);
-                        }
-
-                        // If similarity is high enough to be considered as a match we will add it to our map
-                        if (originalComputation.getValue() >= stringSimThreshold) {
-                            String[] tmp = null;
-
-                            // In case its an identifier use the pretrained classifier (gradient boosting)
-                            if (identifierPredicates.contains(relationArray[relationArray.length - 1])) {
-                                boolean equals = false;
-                                String method = "";
-                                if (ConfigurationLoader.useRegex()) {
-                                    String[] dbRelationArray = dbRelation.split(", ");
-                                    String type = SchemaLoader.getIdentifierType(dbRelationArray[dbRelationArray.length - 1], this.dbName);
-
-                                    // If no filter is specified then search for the best matching one otherwise use the filter
-                                    if (type != null && type.equals("none")) {
-                                        List<String> types = SchemaLoader.getIdentifierTypes();
-                                        for (String t : types) {
-                                            if (RegExer.isEqual(apiValue, dbValue, ConfigurationLoader.getRegex(t))) {
-                                                equals = true;
-                                                if (Objects.requireNonNull(ConfigurationLoader.getRegex(t)).contains("/f")) {
-                                                    method = "RegExer Fuzzy (" + originalComputation.getKey() + ")";
-                                                } else {
-                                                    method = "RegExer " + t;
-                                                }
-                                                break;
-                                            }
-                                        }
-                                        if (apiValue.equals(dbValue)) {
-                                            method = "RegExer Equal";
-                                        }
-                                    } else {
-                                        String filter = ConfigurationLoader.getRegex(type);
-                                        equals = RegExer.isEqual(apiValue, dbValue, filter);
-                                        if (Objects.requireNonNull(filter).contains("/f")) {
-                                            method = "RegExer Fuzzy (" + originalComputation.getKey() + ")";
-                                        } else {
-                                            method = "RegExer " + type;
-                                        }
-                                    }
-
-                                } else {
-                                    equals = apiValue.equals(dbValue) || classifier.isEquals(apiValue, dbValue);
-                                    method = "Classifier";
-                                }
-
-                                if (equals) {
-                                    tmp = new String[3];
-                                    tmp[0] = apiRelation;                   // JSON Path
-                                    tmp[1] = method;                        // Used Similarity Metric
-                                    tmp[2] = "1";                           // Similarity (value)
-                                }
+                            // Comparision of URLs and numbers needs to be different than compared to strings (e.g. title vs year)
+                            // URLs and numbers should therefore be equal and not similar (a year off by one is no match)
+                            Pair<String, Double> originalComputation;
+                            if ((!identifierPredicates.contains(relationArray[relationArray.length - 1]) && Utils.isNumeric(dbValue))
+                                    || Utils.isNumeric(apiValue) || Utils.isUrl(dbValue) || Utils.isUrl(apiValue) || dbRelation.endsWith("sameAs")) {
+                                double similarity = StringSimilarityProcessor.computeSimilarity(dbValue, apiValue, "Equal");
+                                originalComputation = new Pair<>("Equal", similarity);
                             } else {
-                                tmp = new String[3];
-                                tmp[0] = apiRelation;                                   // JSON Path
-                                tmp[1] = originalComputation.getKey();                  // Used Similarity Metric
-                                tmp[2] = originalComputation.getValue().toString();     // Similarity (value)
+                                originalComputation = StringSimilarityProcessor.computeSimilarity(apiValue, dbValue);
                             }
 
-                            if (tmp != null) {
-                                if (relationMetrics.containsKey(dbRelation)) {
-                                    LinkedList<String[]> metricList = relationMetrics.get(dbRelation);
-                                    metricList.add(tmp);
-                                    relationMetrics.put(dbRelation, metricList);
+                            // If similarity is high enough to be considered as a match we will add it to our map
+                            if (originalComputation.getValue() >= stringSimThreshold) {
+                                String[] tmp = null;
+
+                                // In case its an identifier use the pretrained classifier (gradient boosting)
+                                if (identifierPredicates.contains(relationArray[relationArray.length - 1])) {
+                                    boolean equals = false;
+                                    String method = "";
+                                    if (ConfigurationLoader.useRegex()) {
+                                        String[] dbRelationArray = dbRelation.split(", ");
+                                        String type = SchemaLoader.getIdentifierType(dbRelationArray[dbRelationArray.length - 1], this.dbName);
+
+                                        // If no filter is specified then search for the best matching one otherwise use the filter
+                                        if (type != null && type.equals("none")) {
+                                            List<String> types = SchemaLoader.getIdentifierTypes();
+                                            for (String t : types) {
+                                                if (RegExer.isEqual(apiValue, dbValue, ConfigurationLoader.getRegex(t))) {
+                                                    equals = true;
+                                                    if (Objects.requireNonNull(ConfigurationLoader.getRegex(t)).contains("/f")) {
+                                                        method = "RegExer Fuzzy (" + originalComputation.getKey() + ")";
+                                                    } else {
+                                                        method = "RegExer " + t;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            if (apiValue.equals(dbValue)) {
+                                                method = "RegExer Equal";
+                                            }
+                                        } else {
+                                            String filter = ConfigurationLoader.getRegex(type);
+                                            equals = RegExer.isEqual(apiValue, dbValue, filter);
+                                            if (Objects.requireNonNull(filter).contains("/f")) {
+                                                method = "RegExer Fuzzy (" + originalComputation.getKey() + ")";
+                                            } else {
+                                                method = "RegExer " + type;
+                                            }
+                                        }
+
+                                    } else {
+                                        equals = apiValue.equals(dbValue) || classifier.isEquals(apiValue, dbValue);
+                                        method = "Classifier";
+                                    }
+
+                                    if (equals) {
+                                        tmp = new String[3];
+                                        tmp[0] = apiRelation;                   // JSON Path
+                                        tmp[1] = method;                        // Used Similarity Metric
+                                        tmp[2] = "1";                           // Similarity (value)
+                                    }
                                 } else {
-                                    LinkedList<String[]> metricList = new LinkedList<>();
-                                    metricList.add(tmp);
-                                    relationMetrics.put(dbRelation, metricList);
+                                    tmp = new String[3];
+                                    tmp[0] = apiRelation;                                   // JSON Path
+                                    tmp[1] = originalComputation.getKey();                  // Used Similarity Metric
+                                    tmp[2] = originalComputation.getValue().toString();     // Similarity (value)
+                                }
+
+                                if (tmp != null) {
+                                    if (relationMetrics.containsKey(dbRelation)) {
+                                        LinkedList<String[]> metricList = relationMetrics.get(dbRelation);
+                                        metricList.add(tmp);
+                                        relationMetrics.put(dbRelation, metricList);
+                                    } else {
+                                        LinkedList<String[]> metricList = new LinkedList<>();
+                                        metricList.add(tmp);
+                                        relationMetrics.put(dbRelation, metricList);
+                                    }
                                 }
                             }
                         }
                     }
+                } catch (NullPointerException ignored) {
+                    if(ConfigurationLoader.getLogLevel() > 0) System.out.println("JSON Error");
                 }
-            } catch (NullPointerException ignored) {
-                if(ConfigurationLoader.getLogLevel() > 0) System.out.println("JSON Error");
             }
+
+            return relationMetrics;
         }
 
-        return relationMetrics;
+        return null;
     }
 
     // Collects all available predicates in the local knowledge base
@@ -898,7 +997,9 @@ public class AlignmentProcessor {
                     List<HttpResponse> responseList = new LinkedList<>();
                     if (ConfigurationLoader.isInSupportMode() && DatabaseLoader.existsSelection(apiName)) {
                         List<Pair<String, String>> valueList = KnowledgeBaseManagement.getPredicateValuesArray(dbName, predicate, apiName, similarityRequests);
+                        loops = Math.min(loops, valueList.size());
                         this.sampleEntities.put(predicate, valueList);
+
 
                         for (int i = 0; i < loops; i++) {
                             doApiRequest(valueList.get(i).getKey(), predicate, i, offsetList, responseList);
@@ -906,11 +1007,13 @@ public class AlignmentProcessor {
                         }
                     } else {
                         List<Pair<String, String>> valueList = KnowledgeBaseManagement.getPredicateValues(dbName, inputType, predicate, similarityRequests);
+                        loops = Math.min(loops, valueList.size());
                         this.sampleEntities.put(predicate, valueList);
 
                         for (int i = 0; i < loops; ) {
                             // Request Web API and add the response to responseList
-                            doApiRequest(valueList.get(i).getKey(), predicate, i, offsetList, responseList);
+                            if(isUniqueValue(predicate,valueList.get(i).getKey()))
+                                doApiRequest(valueList.get(i).getKey(), predicate, i, offsetList, responseList);
 
                             i++;
                             pb.step();
@@ -938,6 +1041,17 @@ public class AlignmentProcessor {
             }
         }
 
+    }
+
+    // Check for uniques of the values
+    // If multiple records with this information exists its not a good request value
+    private boolean isUniqueValue(String predicate, String value){
+        String query = "select distinct ?s where { ?s <" + predicate + "> \"" + value + "\" . } LIMIT 2";
+        QueryProcessor qp = new QueryProcessor(query, Objects.requireNonNull(DatabaseLoader.getDatabaseUrl(this.dbName)));
+        boolean unique = ResultSetFormatter.toList(qp.query()).size() == 1;
+        qp.close();
+
+        return unique;
     }
 
     // Method to request additional responses from the Web API in order to determine linkage points

@@ -41,6 +41,23 @@ public class DatabaseLoader {
         return null;
     }
 
+    public static List<String> getDatabaseNames(){
+        JSONObject object = new JSONObject(DiskReader.readFile(ConfigurationLoader.getDatabasePath()));
+        JSONArray array = object.getJSONArray("endpoints");
+
+        List<String> list = new LinkedList<>();
+        for (int i = 0; i < array.length(); i++) {
+            list.add(array.getJSONObject(i).getString("label"));
+        }
+
+        return list;
+    }
+
+    public static JSONArray getDatabases() {
+        JSONObject object = new JSONObject(DiskReader.readFile(ConfigurationLoader.getDatabasePath()));
+        return object.getJSONArray("endpoints");
+    }
+
     /*******************************************************************************************************************
      *  Api Configuration
      ******************************************************************************************************************/
@@ -107,6 +124,21 @@ public class DatabaseLoader {
        } catch (Exception e){
            return false;
        }
+    }
+
+    public static List<String> getApiList(){
+        JSONArray apiArray = new JSONObject(DiskReader.readFile(ConfigurationLoader.getDatabasePath())).getJSONArray("apis");
+
+        List<String> list = new LinkedList<>();
+        for (int i = 0; i < apiArray.length(); i++) {
+            list.add(apiArray.getJSONObject(i).getString("name"));
+        }
+
+        return list;
+    }
+
+    public static JSONArray getApis(){
+        return new JSONObject(DiskReader.readFile(ConfigurationLoader.getDatabasePath())).getJSONArray("apis");
     }
 
     /*******************************************************************************************************************
